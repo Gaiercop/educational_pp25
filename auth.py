@@ -61,9 +61,11 @@ class AuthManager(object):
     def login(self, user, pwd):
         id = 0
         for tuser in self.users:
+            #print(tuser.username, user, tuser.pwd, pwd)
             if (tuser.username == user):
                 if (tuser.login(pwd)):
                     self.sessions.append(id)
+                    return len(self.sessions) - 1
                 else:
                     raise NameError("Wrong username or password")
             id += 1
