@@ -3,7 +3,6 @@ from auth import *
 
 auth = AuthManager()
 
-
 app = Flask(__name__)
 
 @app.route('/catalogs')
