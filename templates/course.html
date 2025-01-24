@@ -1,13 +1,9 @@
-<!-- index.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Page</title>
+{% extends 'base.html' %}
+
+{% block title %}Курс по веб-разработке{% endblock %}
+
+{% block content %}
     <link rel="stylesheet" href="../static/css/styles.css">
-</head>
-<body>
     <div class="container">
         <div class="course-title">Course Name: Introduction to Web Development</div>
         
@@ -43,9 +39,4 @@
             </div>
         </div>
     </div>
-
-    <footer>
-        &copy; 2025 Educational Portal. All Rights Reserved.
-    </footer>
-</body>
-</html>
+{% endblock %}

@@ -49,6 +49,11 @@ def register():
 
 #322
 
+@app.route('/course/<id>')
+def course(id: int):
+    return render_template("course.html")
+    
+
 @app.route('/')
 def index():
     return render_template('index.html')

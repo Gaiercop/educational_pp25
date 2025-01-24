@@ -17,11 +17,10 @@
         <div class="container">
             <nav class="main-nav">
                 <ul>
-                    <li><a href="catalogs">Courses</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="login" class="btn-login">Login</a></li>
-                    <li><a href="register" class="btn-login">Registration</a></li>
+                    <li><a href="{{ url_for('index') }}">Главная</a></li>
+                    <li><a href="{{ url_for('catalogs') }}">Курсы</a></li>
+                    <li><a href="{{ url_for('login') }}" class="btn-login">Войти</a></li>
+                    <li><a href="{{ url_for('register') }}" class="btn-login">Зарегистрироваться</a></li>
                 </ul>
             </nav>
         </div>
