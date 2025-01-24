@@ -1,0 +1,159 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.main-header {
+    background: #4CAF50;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.main-header .logo {
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+.main-header .main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.main-header .main-nav ul li {
+    margin-left: 20px;
+}
+
+.main-header .main-nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.main-header .main-nav ul li .btn-login {
+    background: #fff;
+    color: #4CAF50;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.hero {
+    background: #eaf7ef;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.hero h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.hero .btn-primary {
+    background: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+}
+
+.features {
+    background: #fff;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.features .feature {
+    margin-bottom: 20px;
+}
+
+.features h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #4CAF50;
+}
+
+.popular-courses {
+    background: #f4f4f4;
+    padding: 40px 20px;
+}
+
+.popular-courses h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+
+.course-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.course-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    text-align: center;
+}
+
+.course-item h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.course-item p {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.course-item .btn-secondary {
+    background: #4CAF50;
+    color: #fff;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.main-footer {
+    background: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.main-footer nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.main-footer nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9em;
+}
