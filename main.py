@@ -11,7 +11,9 @@ def catalogs():
     catalogs = ['Electronics', 'Books', 'Clothing', 'Home & Garden']
     return render_template('catalogs.html', catalogs=catalogs)
 
-
+@app.route('/tests')
+def tests():
+    return render_template('test.html')
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
