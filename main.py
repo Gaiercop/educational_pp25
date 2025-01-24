@@ -27,7 +27,7 @@ def login():
 
     return render_template("login.html", message=message)
 
-@app.route('/register', methods=["POST", "GET"])
+@app.route('/registration', methods=["POST", "GET"])
 def register():
     message = 'Введите логин и пароль'
     if request.method == 'POST':
