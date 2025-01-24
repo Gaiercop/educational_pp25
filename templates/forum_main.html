@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Образовательный Портал</title>
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="../static/css/forum.css">
+        <style>
+      .search-container {
+        display: flex;
+        margin-top: 20px;
+        max-width: 50%; /* Set maximum width of container */
+        margin-left: auto;
+        margin-right: auto;/* Added to center horizontally*/
+        }
+      .search-input {
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px 0 0 5px;
+          flex-grow: 1;
+          max-width: calc(100% - 80px); /* Adjusted to account for button width - can be adjusted if need */
+      }
+      .search-button {
+          padding: 10px 15px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 0 5px 5px 0;
+          cursor: pointer;
+          white-space: nowrap;
+      }
+      .theme-title a {
+        text-decoration: none;
+        color: #333; /* Dark gray color for the title */
+        display: block;
+        font-size: 1.2em;
+        font-weight: 600; /* Semi-bold font-weight */
+        margin-bottom: 5px;
+        padding: 8px 12px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
+        background-color: #f9f9f9; /* Light background color */
+      }
+      .theme-title a:hover {
+          background-color: #e0f7fa; /* Light cyan background on hover */
+          color: #007bff; /* Blue color on hover */
+           text-decoration: none; /* Remove default hover underline */
+        }
+        </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <img src="" alt="Ваш Логотип" class="logo-image">
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Курсы</a></li>
+                    <li><a href="#">О Нас</a></li>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#" class="btn-login">Вход</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Добро пожаловать на форум!</h1>
+            <p>Здесь вы можете задать вопросы или узнать какую-нибудь информацию</p>
+             <div class="search-container">
+                <input type="text" placeholder="Поиск..." class="search-input">
+                <button class="search-button">Искать</button>
+             </div>
+        </div>
+    </section>
+ <section class="popular-themes">
+    <div class="container">
+        <div class="theme-list">
+            {% for theme in popular_themes %}
+            <div class="theme-item">
+                <h3 class="theme-title"><a href="/forum/topic/{{theme[0]}}">{{ theme[1] }}</a></h3>
+                <p>{{ theme[2] }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 Образовательный Портал. Все права защищены.</p>
+            <nav>
+                <ul>
+                    <li><a href="#">Политика Конфиденциальности</a></li>
+                    <li><a href="#">Условия Предоставления Услуг</a></li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
+
+
+
+</body>
+</html>
