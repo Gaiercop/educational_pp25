@@ -27,6 +27,12 @@ def login():
 
     return render_template("login.html", message=message)
 
+
+@app.route('/registration', methods=["POST", "GET"])
+def login():
+    return render_template("registration.html")
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
