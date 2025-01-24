@@ -59,6 +59,7 @@
     </script>
 </head>
 <body>
+
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -67,6 +68,7 @@
                         <div class="d-flex justify-content-end mb-3">
                             <button onclick="toggleTheme()" class="btn btn-secondary">Сменить тему</button>
                         </div>
+                        <h1> {{message}}</h1>
                         <form action="/register" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Логин</label>
@@ -79,11 +81,11 @@
                             <div class="mb-3">
                                 <legend>Уровень доступа</legend>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="gender" value="Ученик" required>
+                                    <input class="form-check-input" type="radio" name="access" value="Ученик" required>
                                     <label class="form-check-label">Ученик</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="gender" value="Учитель">
+                                    <input class="form-check-input" type="radio" name="access" value="Учитель">
                                     <label class="form-check-label">Учитель</label>
                                 </div>
                             </div>
