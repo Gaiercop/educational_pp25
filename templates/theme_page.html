@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ theme[1] }} - Форум</title>
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="../static/css/forum.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <img src="" alt="Ваш Логотип" class="logo-image">
+            </div>
+             <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Курсы</a></li>
+                    <li><a href="#">О Нас</a></li>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#" class="btn-login">Вход</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="theme-container">
+        <div class="theme-header">
+            <h1>{{ theme[1] }}</h1>
+            <p>{{ theme[2] }}</p>
+        </div>
+
+        <div class="theme-content">
+            <h3>Обсуждения</h3>
+             <div class="post">
+                <p><strong>Пользователь:</strong> <span class="author">Иван Иванов</span></p>
+                <p>Последние новости про ИИ просто поражают! Каково ваше мнение?</p>
+            </div>
+             <div class="post">
+                <p><strong>Пользователь:</strong> <span class="author">Петр Петров</span></p>
+                <p>Я согласен. ИИ меняет наш мир. Хотелось бы подробнее изучить.</p>
+            </div>
+              <div class="post">
+                <p><strong>Пользователь:</strong> <span class="author">Степан Степанов</span></p>
+                <p>Да, я думаю, что это начало новой эры. Хотелось бы больше информации про это</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 Образовательный Портал. Все права защищены.</p>
+            <nav>
+                <ul>
+                    <li><a href="#">Политика Конфиденциальности</a></li>
+                    <li><a href="#">Условия Предоставления Услуг</a></li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
+
+</body>
+</html>
