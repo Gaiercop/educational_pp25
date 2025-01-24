@@ -29,6 +29,26 @@ def login():
 
     return render_template("login.html", message=message)
 
+@app.route('/register', methods=["POST", "GET"])
+def register():
+    message = 'Заполните поля для регистрации'
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        access = request.form['access']
+        if (access == 'Ученик'):
+            access = 1
+        else:
+            access = 2
+        try:
+            auth.addUser(User(username, password, access))
+            message = 'Вы успешно зарегистрировались'
+        except:
+            message = 'Ошибка, попробуйте еще раз'
+
+    return render_template("register.html", message=message)
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
