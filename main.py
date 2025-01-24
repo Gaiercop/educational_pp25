@@ -7,6 +7,10 @@ def catalogs():
     catalogs = ['Electronics', 'Books', 'Clothing', 'Home & Garden']
     return render_template('catalogs.html', catalogs=catalogs)
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 @app.route('/')
 def index():
     return render_template('index.html')
