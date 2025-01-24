@@ -3,61 +3,40 @@
 {% block title %}Регистрация{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
+<link rel="stylesheet" href="../static/css/auth.css">
+<div class="container d-flex align-items-center justify-content-center" style="min-height: calc(100vh - 120px);">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-4">
+            <div class="card auth-card">
                 <div class="card-body">
-                    <h1> {{message}}</h1>
+                    <h3 class="text-center">{{ message }}</h3>
+                    <h3 class="text-center course-title">Регистрация</h3>
                     <form action="/register" method="post" enctype="multipart/form-data">
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="username" class="form-label">Логин</label>
-                            <input type="text" id="username" name="username" class="form-control" required>
+                            <input type="text" id="username" name="username" class="form-control custom-input" required>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="password" class="form-label">Пароль</label>
-                            <input type="password" id="password" name="password" class="form-control" required>
+                            <input type="password" id="password" name="password" class="form-control custom-input" required>
                         </div>
-                        <div class="mb-3">
-                            <legend>Уровень доступа</legend>
+                        <div class="mb-4">
+                            <legend class="form-label">Уровень доступа</legend>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="access" value="Ученик" required>
-                                <label class="form-check-label">Ученик</label>
+                                <input class="form-check-input" type="radio" id="access-student" name="access" value="Ученик" required>
+                                <label for="access-student" class="form-check-label">Ученик</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="access" value="Учитель">
-                                <label class="form-check-label">Учитель</label>
+                                <input class="form-check-input" type="radio" id="access-teacher" name="access" value="Учитель">
+                                <label for="access-teacher" class="form-check-label">Учитель</label>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-                            <button type="reset" class="btn btn-secondary">Очистить</button>
-                        </div>
+                        <button type="submit" class="btn btn-custom w-100 mb-3">Зарегистрироваться</button>
+                        <button type="reset" class="btn btn-danger btn-sm w-auto d-block mx-auto">Очистить</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 {% endblock %}
