@@ -101,8 +101,8 @@
         <div class="theme-list">
             {% for theme in popular_themes %}
             <div class="theme-item">
-                <h3 class="theme-title"><a href="/forum/topic/{{theme[0]}}">{{ theme[1] }}</a></h3>
-                <p>{{ theme[2] }}</p>
+                <h3 class="theme-title"><a href="/forum/topic/{{theme[0]}}">{{ theme[1][:100] }}</a></h3>
+                <p>{{ theme[2][:100] }}</p>
             </div>
             {% endfor %}
         </div>
