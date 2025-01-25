@@ -1,4 +1,9 @@
-<!DOCTYPE html>
+
+{% extends 'base.html' %}
+
+{% block title %}Форум{% endblock %}
+
+{% block content %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -7,29 +12,58 @@
     <link rel="stylesheet" href="../static/css/index.css">
     <link rel="stylesheet" href="../static/css/forum.css">
         <style>
-      .search-container {
-        display: flex;
-        margin-top: 20px;
-        max-width: 50%; /* Set maximum width of container */
-        margin-left: auto;
-        margin-right: auto;/* Added to center horizontally*/
+        .search-container {
+            display: flex;
+            margin-top: 20px;
+            max-width: 100%; /* Set maximum width of container */
+            margin-left: auto;
+            margin-right: auto; /* Added to center horizontally */
+           align-items: center; /* Vertically align the items in the container */
+             justify-content: center; /* horizontally align the items in the container */
         }
-      .search-input {
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 5px 0 0 5px;
-          flex-grow: 1;
-          max-width: calc(100% - 80px); /* Adjusted to account for button width - can be adjusted if need */
-      }
-      .search-button {
-          padding: 10px 15px;
-          background-color: #007bff;
+       @media (max-width: 768px) {
+        .search-container {
+            flex-direction: column; /* Stack elements vertically on smaller screens */
+             align-items: stretch;  /* Allow input field to occupy full width */
+            }
+           .search-input, .search-button, .new-theme-button {
+                 border-radius: 5px !important;
+                margin-bottom: 5px;
+           }
+       }
+        .search-input {
+             padding: 10px;
+            border: 1px solid #ccc;
+             border-radius: 5px 0 0 5px;
+            flex-grow: 0.5; /* Modified this */
+            box-sizing: border-box;
+            max-width: 400px; /*Added this*/
+        }
+        .search-button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            white-space: nowrap;
+
+        }
+     .new-theme-button {
+            padding: 10px 15px;
+          background-color: #28a745; /* Green color for contrast */
           color: white;
-          border: none;
-          border-radius: 0 5px 5px 0;
-          cursor: pointer;
-          white-space: nowrap;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+         white-space: nowrap;
+         margin-left: 5px; /* Add some spacing to the left*/
+          text-decoration: none; /*Remove the default underline*/
       }
+
+     .new-theme-button:hover {
+            background-color: #218838; /* Darker shade of green on hover */
+     }
       .theme-title a {
         text-decoration: none;
         color: #333; /* Dark gray color for the title */
@@ -50,29 +84,15 @@
         </style>
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
-            <div class="logo">
-                <img src="" alt="Ваш Логотип" class="logo-image">
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#">Курсы</a></li>
-                    <li><a href="#">О Нас</a></li>
-                    <li><a href="#">Контакты</a></li>
-                    <li><a href="#" class="btn-login">Вход</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
     <section class="hero">
         <div class="container">
             <h1>Добро пожаловать на форум!</h1>
             <p>Здесь вы можете задать вопросы или узнать какую-нибудь информацию</p>
              <div class="search-container">
-                <input type="text" placeholder="Поиск..." class="search-input">
-                <button class="search-button">Искать</button>
+                 <input type="text" placeholder="Поиск..." class="search-input">
+                 <button class="search-button">Искать</button>
+                 <a href="/forum/new_post" class="new-theme-button">Новая Тема</a>
              </div>
         </div>
     </section>
@@ -89,19 +109,6 @@
     </div>
 </section>
 
-    <footer class="main-footer">
-        <div class="container">
-            <p>&copy; 2025 Образовательный Портал. Все права защищены.</p>
-            <nav>
-                <ul>
-                    <li><a href="#">Политика Конфиденциальности</a></li>
-                    <li><a href="#">Условия Предоставления Услуг</a></li>
-                </ul>
-            </nav>
-        </div>
-    </footer>
-
-
-
 </body>
 </html>
+{% endblock %}

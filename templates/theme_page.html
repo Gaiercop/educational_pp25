@@ -1,28 +1,18 @@
-<!DOCTYPE html>
+
+{% extends 'base.html' %}
+
+{% block title %}{{theme[1]}}{% endblock %}
+
+{% block content %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ theme[1] }} - Форум</title>
-    <link rel="stylesheet" href="../static/css/index.css">
-    <link rel="stylesheet" href="../static/css/forum.css">
+    <link rel="stylesheet" href="../../static/css/index.css">
+    <link rel="stylesheet" href="../../static/css/forum.css">
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
-            <div class="logo">
-                <img src="" alt="Ваш Логотип" class="logo-image">
-            </div>
-             <nav class="main-nav">
-                <ul>
-                    <li><a href="#">Курсы</a></li>
-                    <li><a href="#">О Нас</a></li>
-                    <li><a href="#">Контакты</a></li>
-                    <li><a href="#" class="btn-login">Вход</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
     <div class="theme-container">
         <div class="theme-header">
@@ -32,32 +22,30 @@
 
         <div class="theme-content">
             <h3>Обсуждения</h3>
-             <div class="post">
-                <p><strong>Пользователь:</strong> <span class="author">Иван Иванов</span></p>
-                <p>Последние новости про ИИ просто поражают! Каково ваше мнение?</p>
-            </div>
-             <div class="post">
-                <p><strong>Пользователь:</strong> <span class="author">Петр Петров</span></p>
-                <p>Я согласен. ИИ меняет наш мир. Хотелось бы подробнее изучить.</p>
-            </div>
-              <div class="post">
-                <p><strong>Пользователь:</strong> <span class="author">Степан Степанов</span></p>
-                <p>Да, я думаю, что это начало новой эры. Хотелось бы больше информации про это</p>
+
+             {% for post in posts %}
+                <div class="post">
+                    <p><strong>{{post[0]}}</strong></p>
+                    <p>{{ post[1] }}</p>
+                     <p class="created-at">{{ post[2][:-3]}}</p>
+                </div>
+            {% endfor %}
+
+            <div class="new-post-form">
+                <form method="post" >
+                    <div class="form-group">
+                        <label for="author">Пользователь:</label>
+                        <input type="text" id="author" name="author" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Сообщение:</label>
+                        <textarea id="content" name="content" rows="4" required></textarea>
+                    </div>
+                   <button type="submit" class="btn-submit">Отправить</button>
+                </form>
             </div>
         </div>
     </div>
-
-    <footer class="main-footer">
-        <div class="container">
-            <p>&copy; 2025 Образовательный Портал. Все права защищены.</p>
-            <nav>
-                <ul>
-                    <li><a href="#">Политика Конфиденциальности</a></li>
-                    <li><a href="#">Условия Предоставления Услуг</a></li>
-                </ul>
-            </nav>
-        </div>
-    </footer>
-
 </body>
 </html>
+{% endblock %}
