@@ -11,6 +11,7 @@ def forum():
     for i in theme_list:
         theme.append(get_theme_by_id(i))
     return render_template('forum_main.html', popular_themes = theme)
+
 @app.route('/forum/new_post', methods=['GET', 'POST'])
 def do_post():
      if request.method == 'POST':
@@ -29,9 +30,15 @@ def show_theme(theme_id):
     theme = get_theme_by_id(theme_id)
     posts = get_messages_by_theme_id(theme_id)
     return render_template('theme_page.html', theme=theme, posts = posts)
+
 @app.route('/catalogs')
 def catalogs():
-    catalogs = {'Electronics': 'Web Development Basics', 'Data Science' : 'Master data analysis and visualization techniques.', 'Digital Marketing':'Understand SEO, social media marketing, and more.'}
+    jsfile = open("courses.json", "r", encoding="utf-8")
+    arr = json.load(jsfile)
+    catalogs = dict()
+    for d in arr:
+        key = list(d.keys())[0]
+        catalogs[key] = d[key]
     return render_template('catalogs.html', catalogs=catalogs)
 
 @app.route('/tests')
