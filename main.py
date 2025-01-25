@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/catalogs')
 def catalogs():
-    catalogs = ['Electronics', 'Books', 'Clothing', 'Home & Garden']
+    catalogs = {'Electronics': 'Web Development Basics', 'Data Science' : 'Master data analysis and visualization techniques.', 'Digital Marketing':'Understand SEO, social media marketing, and more.'}
     return render_template('catalogs.html', catalogs=catalogs)
 
 @app.route('/tests')
