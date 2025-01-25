@@ -82,7 +82,10 @@ def register():
 
 @app.route('/course/<id>')
 def course(id: int):
-    return render_template("course.html")
+    k = int(id)+int(1)
+    st = "cours/course"+str(k)+".html"
+    print(st)
+    return render_template(st)
     
 
 @app.route('/')
