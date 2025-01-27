@@ -221,7 +221,6 @@ def login():
             sid = -1
         else:
             sid = -1
-    sid = request.args.get('sid')
     message = 'Введите логин и пароль'
     if request.method == 'POST':
         username = request.form['username']
@@ -247,7 +246,6 @@ def register():
             sid = -1
         else:
             sid = -1
-    sid = request.args.get('sid')
     message = 'Заполните поля для регистрации'
     if request.method == 'POST':
         username = request.form['username']
