@@ -3,5 +3,70 @@
 {% block title %}База заданий{% endblock %}
 
 {% block content %}
-ляляля
+<head>
+    <meta charset="UTF-8">
+    <title>База заданий</title>
+    <link rel="stylesheet" href="../static/css/index.css">
+    <style>
+        .task-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .task-container h3 {
+           margin-bottom: 0.5rem;
+           margin-top: 0;
+        }
+        .task-container p {
+            margin-bottom: 0.5rem;
+            margin-top: 0;
+        }
+        .task-container ul {
+          padding-left: 20px;
+          margin-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+       .tags{
+        margin-top: 10px;
+       }
+    </style>
+</head>
+<body>
+<main>
+    <div class="container">
+        <h1>База заданий</h1>
+
+        <form method="GET">
+            <div class="tags">
+                <label>Фильтр по тегам:</label><br>
+                {% for tag in all_tags %}
+                <input type="checkbox" id="{{tag}}" name="tags" value="{{ tag }}">
+                <label for="{{tag}}">{{ tag }}</label><br>
+                {% endfor %}
+                </br>
+                <button type="submit">Применить фильтр</button>
+            </div>
+        </form>
+    </div>
+
+    {% for task in tasks %}
+    <div class="task-container">
+        <h3>Задание {{ task.id }}</h3>
+        <p>{{ task.text }}</p>
+        {% if task.options %}
+        <p><strong>Варианты:</strong></p>
+        <ul>
+            {% for option in task.options %}
+            <li>{{ option }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <p><strong>Теги:</strong> {{ ', '.join(task.tags) }}</p>
+        <p><strong>Сложность:</strong> {{task.difficulty}}</p>
+    </div>
+    {% endfor %}
+    </div>
+</main>
+</body>
 {% endblock %}
