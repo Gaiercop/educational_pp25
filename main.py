@@ -263,10 +263,6 @@ def register():
 
     return render_template("register.html", message=message, sid="-1")
 
-@app.route('/profile', methods=["GET"])
-def profile():
-    return render_template("profile.html", sid="-1")
-
 
 # 322
 
@@ -290,8 +286,8 @@ def course(course_id):
 
     return render_template("course.html", course=course_data, course_id=course_id, sid=str(sid))
 
-app.route('/lk', methods=["POST", "GET"])
-def lk():
+@app.route('/profile', methods=["POST", "GET"])
+def profile():
     sid = request.args.get('sid')
     if (type(sid) == NoneType):
         sid = -1
@@ -310,7 +306,7 @@ def lk():
     elif (user.access == 2):
         access = "Учитель"
     print(access)
-    render_template("profile.html", sid=str(sid), username=user.username, access=access)
+    return render_template("profile.html", sid=str(sid), username=user.username, access=access)
 
 @app.route('/')
 def index():
