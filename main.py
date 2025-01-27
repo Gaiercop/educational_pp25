@@ -9,6 +9,26 @@ auth = AuthManager()
 app = Flask(__name__)
 COURSES_DIR = "./courses"
 TESTS_DIR = "./tests"
+@app.route('/teory/<nomer>')
+def teory(nomer):
+    try:
+        with open("teory/"+str(nomer)+".json", "r", encoding='utf-8') as f:
+            data = json.load(f)
+            print(data)
+    except FileNotFoundError:
+        print("Файл не найден.")
+    except json.JSONDecodeError:
+        print("Ошибка декодирования JSON.")
+    try:
+        with open("relocate"+".json", "r", encoding='utf-8') as f:
+            relo = json.load(f)
+    except FileNotFoundError:
+        print("Файл не найден.")
+    except json.JSONDecodeError:
+        print("Ошибка декодирования JSON.")
+    print(data)
+    return render_template('teory.html', teory = data, relo = relo)
+
 
 @app.route('/forum')
 def forum():
@@ -272,8 +292,16 @@ def course(course_id):
     
     with open(course_file, 'r', encoding='utf-8') as file:
         course_data = json.load(file)
-
-    return render_template("course.html", course=course_data, course_id=course_id)
+        try:
+            with open("relocate" + ".json", "r", encoding='utf-8') as f:
+                relo = json.load(f)
+        except FileNotFoundError:
+            print("Файл не найден.")
+        except json.JSONDecodeError:
+            print("Ошибка декодирования JSON.")
+    print(relo.get("Указательные местоимения", '#'))
+    print(course_data)
+    return render_template("course.html", course=course_data, course_id=course_id, relo = relo)
     
 
 @app.route('/')

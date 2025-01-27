@@ -4,6 +4,85 @@
 
 {% block content %}
     <link rel="stylesheet" href="../static/css/styles.css">
+<link rel="stylesheet" href="../static/css/forum.css">
+<style>
+    .search-container {
+            display: flex;
+            margin-top: 20px;
+            max-width: 100%; /* Set maximum width of container */
+            margin-left: auto;
+            margin-right: auto; /* Added to center horizontally */
+            align-items: center; /* Vertically align the items in the container */
+            justify-content: center; /* horizontally align the items in the container */
+        }
+
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column; /* Stack elements vertically on smaller screens */
+                align-items: stretch; /* Allow input field to occupy full width */
+            }
+
+            .search-input, .search-button, .new-theme-button {
+                border-radius: 5px !important;
+                margin-bottom: 5px;
+            }
+        }
+
+        .search-input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            flex-grow: 0.5; /* Modified this */
+            box-sizing: border-box;
+            max-width: 400px; /*Added this*/
+        }
+
+        .search-button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            white-space: nowrap;
+
+        }
+
+        .new-theme-button {
+            padding: 10px 15px;
+            background-color: #28a745; /* Green color for contrast */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            white-space: nowrap;
+            margin-left: 5px; /* Add some spacing to the left*/
+            text-decoration: none; /*Remove the default underline*/
+        }
+
+        .new-theme-button:hover {
+            background-color: #218838; /* Darker shade of green on hover */
+        }
+
+        .theme-title a {
+            text-decoration: none;
+            color: #333; /* Dark gray color for the title */
+            display: block;
+            font-size: 1.2em;
+            font-weight: 600; /* Semi-bold font-weight */
+            margin-bottom: 5px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
+            background-color: #f9f9f9; /* Light background color */
+        }
+
+        .theme-title a:hover {
+            background-color: #e0f7fa; /* Light cyan background on hover */
+            color: #007bff; /* Blue color on hover */
+            text-decoration: none; /* Remove default hover underline */
+        }
+</style>
     <div class="container">
         <div class="course-title">{{ course.name }}</div>
         
@@ -17,7 +96,7 @@
             
             {% for lesson in module.lessons %}
             <div class="lesson">
-                <div class="lesson-title">{{ lesson.name }}</div>
+                <div class="lesson-title"><h4 class="theme-title"><a href ="{{url_for('teory', nomer = relo.get(lesson.name, '#')) }}"> {{ lesson.name }} </a></h4> </div>
                 <div class="lesson-content">{{ lesson.description }}</div>
             </div>
             {% endfor %}
