@@ -7,6 +7,9 @@ body {
     line-height: 1.6;
     height: 100%;
     justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
@@ -150,6 +153,8 @@ body {
     color: #fff;
     padding: 20px 0;
     text-align: center;
+    margin-top: auto;
+    flex-shrink: 0;
 }
 
 .main-footer nav ul {

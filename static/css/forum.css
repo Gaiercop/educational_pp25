@@ -22,25 +22,25 @@
 
 .theme-header p {
     color: #666;
-    text-align: center;/*Added here*/
+    text-align: center; /*Added here*/
 }
 
 .theme-content h3 {
-   border-bottom: 1px solid #eee;
-   padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
 }
 
 .post {
-     margin-top: 15px;
-     padding: 10px;
-     background-color: white;
-     border: 1px solid #eee;
-     border-radius: 5px;
+    margin-top: 15px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 5px;
 }
 
 .post .author {
-     font-style: italic;
-      color: #888;
+    font-style: italic;
+    color: #888;
 }
 
 .new-post-form {
@@ -49,10 +49,12 @@
     margin-top: 20px;
     border-radius: 5px;
 }
-.new-post-form h3{
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+
+.new-post-form h3 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
 }
+
 .form-group {
     margin-bottom: 15px;
 }
@@ -85,6 +87,7 @@
 .btn-submit:hover {
     background-color: #0056b3;
 }
+
 .new-theme-form {
     max-width: 600px;
     margin: 20px auto;
@@ -99,14 +102,16 @@
     text-align: center;
     color: #333;
 }
+
 .new-post-info {
-   margin-top: 10px;
+    margin-top: 10px;
     margin-bottom: 10px;
     text-align: center;
     color: #555;
 }
+
 .post .created-at {
-  font-size: 0.8em;
-  color: #888;
-  margin-top: 5px;
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 5px;
 }

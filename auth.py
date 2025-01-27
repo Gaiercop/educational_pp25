@@ -1,9 +1,11 @@
 import json
 
+
 class User(object):
     username = ""
     pwd = ""
     access = 0
+
     def __init__(self, username, pwd, access):
         self.username = username
         self.pwd = pwd
@@ -19,12 +21,15 @@ class User(object):
         ans["access"] = str(self.access)
         return ans
 
+
 def fromJSONtoUser(js):
     return User(js["username"], js["pwd"], int(js["access"]))
+
 
 class AuthManager(object):
     users = []
     sessions = []
+
     def __init__(self):
         self.loadUserData()
         return
@@ -61,7 +66,7 @@ class AuthManager(object):
     def login(self, user, pwd):
         id = 0
         for tuser in self.users:
-            #print(tuser.username, user, tuser.pwd, pwd)
+            # print(tuser.username, user, tuser.pwd, pwd)
             if (tuser.username == user):
                 if (tuser.login(pwd)):
                     self.sessions.append(id)
@@ -70,6 +75,6 @@ class AuthManager(object):
                     raise NameError("Wrong username or password")
             id += 1
         raise NameError("Wrong username or password")
+
     def terminateSID(self, sid):
         self.sessions[sid] = -1
-

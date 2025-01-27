@@ -14,18 +14,20 @@ def forum():
     theme = []
     for i in theme_list:
         theme.append(get_theme_by_id(i))
-    return render_template('forum_main.html', popular_themes = theme)
+    return render_template('forum_main.html', popular_themes=theme)
+
 
 @app.route('/forum/new_post', methods=['GET', 'POST'])
 def do_post():
-     if request.method == 'POST':
-         title = request.form['title']
-         description = request.form['description']
-         theme_id = create_theme(title, description)
-         return redirect(url_for("show_theme", theme_id = theme_id))
-     return render_template('create_post.html') # Render create theme form
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        theme_id = create_theme(title, description)
+        return redirect(url_for("show_theme", theme_id=theme_id))
+    return render_template('create_post.html')  # Render create theme form
 
-@app.route('/forum/topic/<theme_id>', methods = ['GET', 'POST'])
+
+@app.route('/forum/topic/<theme_id>', methods=['GET', 'POST'])
 def show_theme(theme_id):
     if request.method == 'POST':
         au = request.form['author']
@@ -33,7 +35,8 @@ def show_theme(theme_id):
         add_new_message(theme_id, au, cont)
     theme = get_theme_by_id(theme_id)
     posts = get_messages_by_theme_id(theme_id)
-    return render_template('theme_page.html', theme=theme, posts = posts)
+    return render_template('theme_page.html', theme=theme, posts=posts)
+
 
 @app.route('/catalogs')
 def catalogs():
@@ -45,6 +48,17 @@ def catalogs():
         catalogs[key] = d[key]
     return render_template('catalogs.html', catalogs=catalogs)
 
+
+@app.route('/tasks')  # Определяем endpoint /tasks
+def tasks():
+    # Ваш код для обработки запроса /tasks
+    tasks_list = ['Task 1', 'Task 2', 'Task 3']  # Пример списка
+    return render_template('tasks.html', tasks=tasks_list)
+
+
+@app.route('/tests')
+def tests():
+    return render_template('test.html')
 @app.route('/course/<int:course_id>/test/<int:test_id>')
 def test(course_id, test_id):
     test_file = os.path.join(TESTS_DIR, f"{course_id}_{test_id}.json")
@@ -56,6 +70,7 @@ def test(course_id, test_id):
         test_data = json.load(file)
 
     return render_template("test.html", test=test_data, course_id=course_id, test_id=test_id)
+
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
@@ -70,6 +85,7 @@ def login():
             message = "Неверные логин или пароль"
 
     return render_template("login.html", message=message)
+
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
@@ -90,7 +106,8 @@ def register():
 
     return render_template("register.html", message=message)
 
-#322
+
+# 322
 
 @app.route('/course/<int:course_id>')
 def course(course_id):
@@ -108,6 +125,7 @@ def course(course_id):
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

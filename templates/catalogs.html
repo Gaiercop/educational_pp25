@@ -8,11 +8,11 @@
         <h2>Popular Courses</h2>
         <div class="course-list">
             {% for key in catalogs.keys() %}
-                <div class="course-item">
-                    <h3>{{ key }}</h3>
-                    <p>{{ catalogs[key] }}</p>
-                    <a href="course/{{loop.index0}}" class="btn-secondary">View Course</a>
-                </div>
+            <div class="course-item">
+                <h3>{{ key }}</h3>
+                <p>{{ catalogs[key] }}</p>
+                <a href="course/{{loop.index0}}" class="btn-secondary">Открыть</a>
+            </div>
             {% endfor %}
         </div>
     </div>
@@ -25,6 +25,7 @@
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 20px;
     }
+
     .course-item {
         border: 1px solid #ddd;
         border-radius: 8px;
@@ -32,6 +33,7 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         text-align: center;
     }
+
     .btn-secondary {
         display: inline-block;
         margin-top: 10px;
@@ -42,6 +44,7 @@
         border-radius: 4px;
         transition: background-color 0.3s;
     }
+
     .btn-secondary:hover {
         background-color: #0056b3;
     }

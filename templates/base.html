@@ -13,31 +13,35 @@
     </script>
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="{{ url_for('index') }}">Главная</a></li>
-                    <li><a href="{{ url_for('catalogs') }}">Курсы</a></li>
-                    <li><a href="{{ url_for('forum') }}">Форум</a></li>
-                    <li><a href="{{ url_for('login') }}" class="btn-login">Войти</a></li>
-                    <li><a href="{{ url_for('register') }}" class="btn-login">Зарегистрироваться</a></li>
+<header class="main-header">
+    <div class="container">
+        <nav class="main-nav">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Главная</a></li>
+                <li><a href="{{ url_for('catalogs') }}">Курсы</a></li>
+                <li><a href="{{ url_for('forum') }}">Форум</a></li>
+                <li><a href="{{ url_for('tasks') }}">База заданий</a></li>
+                <li><a href="{{ url_for('login') }}" class="btn-login">Войти</a></li>
+                <li><a href="{{ url_for('register') }}" class="btn-login">Зарегистрироваться</a></li>
 
-                </ul>
-            </nav>
-        </div>
-    </header>
+            </ul>
+        </nav>
+    </div>
+</header>
+<main>
     {% block content %}{% endblock %}
-    <footer class="main-footer">
-        <div class="container">
-            <p>&copy; 2025 Educational Portal. All Rights Reserved.</p>
-            <nav>
-                <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
-            </nav>
-        </div>
-    </footer>
+</main>
+<footer class="main-footer">
+    <div class="container">
+        <p>&copy; 2025 Образовательный портал. Все права защищены.</p>
+        <nav>
+            <ul>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Условия использования</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
 </body>
 </html>
+
