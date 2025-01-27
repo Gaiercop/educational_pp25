@@ -20,6 +20,14 @@ def forum():
             sid = int(sid)
         else:
             sid = -1
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
 
     theme_list = get_all_theme_ids()
     theme = []
@@ -38,6 +46,14 @@ def do_post():
             sid = int(sid)
         else:
             sid = -1
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
@@ -48,6 +64,14 @@ def do_post():
 
 @app.route('/forum/topic/<theme_id>', methods=['GET', 'POST'])
 def show_theme(theme_id):
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     sid = request.args.get('sid')
     if (type(sid) == NoneType):
         sid = -1
@@ -75,6 +99,14 @@ def catalogs():
             sid = int(sid)
         else:
             sid = -1
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     jsfile = open("courses.json", "r", encoding="utf-8")
     arr = json.load(jsfile)
     catalogs = dict()
@@ -86,6 +118,14 @@ def catalogs():
 
 @app.route('/tasks')  # Определяем endpoint /tasks
 def tasks():
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     sid = request.args.get('sid')
     if (type(sid) == NoneType):
         sid = -1
@@ -109,10 +149,26 @@ def tests():
             sid = int(sid)
         else:
             sid = -1
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     return render_template('test.html')
 
 @app.route('/course/<int:course_id>/test/<int:test_id>')
 def test(course_id, test_id):
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     sid = request.args.get('sid')
     if (type(sid) == NoneType):
         sid = -1
@@ -133,6 +189,14 @@ def test(course_id, test_id):
 
 @app.route('/course/<int:course_id>/test/<int:test_id>/result')
 def test_result(course_id, test_id):
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     test_name = "Тест 1"
     correct_answers = 3
     total_questions = 5
@@ -193,6 +257,14 @@ def course(course_id):
             sid = int(sid)
         else:
             sid = -1
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     course_file = os.path.join(COURSES_DIR, f"{course_id}.json")
     
     if not os.path.exists(course_file):
@@ -206,6 +278,14 @@ def course(course_id):
 
 @app.route('/')
 def index():
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     sid = request.args.get('sid')
     if (type(sid) == NoneType):
         sid = -1
