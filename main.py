@@ -33,7 +33,7 @@ def forum():
     theme = []
     for i in theme_list:
         theme.append(get_theme_by_id(i))
-    return render_template('forum_main.html', popular_themes=theme)
+    return render_template('forum_main.html', popular_themes=theme, sid=sid)
 
 
 @app.route('/forum/new_post', methods=['GET', 'POST'])
@@ -59,7 +59,7 @@ def do_post():
         description = request.form['description']
         theme_id = create_theme(title, description)
         return redirect(url_for("show_theme", theme_id=theme_id))
-    return render_template('create_post.html')  # Render create theme form
+    return render_template('create_post.html', sid=sid)  # Render create theme form
 
 
 @app.route('/forum/topic/<theme_id>', methods=['GET', 'POST'])
@@ -86,7 +86,7 @@ def show_theme(theme_id):
         add_new_message(theme_id, au, cont)
     theme = get_theme_by_id(theme_id)
     posts = get_messages_by_theme_id(theme_id)
-    return render_template('theme_page.html', theme=theme, posts=posts)
+    return render_template('theme_page.html', theme=theme, posts=posts, sid=sid)
 
 
 @app.route('/catalogs')
@@ -113,7 +113,7 @@ def catalogs():
     for d in arr:
         key = list(d.keys())[0]
         catalogs[key] = d[key]
-    return render_template('catalogs.html', catalogs=catalogs)
+    return render_template('catalogs.html', catalogs=catalogs, sid=sid)
 
 
 @app.route('/tasks')  # Определяем endpoint /tasks
@@ -136,7 +136,7 @@ def tasks():
             sid = -1
     # Ваш код для обработки запроса /tasks
     tasks_list = ['Task 1', 'Task 2', 'Task 3']  # Пример списка
-    return render_template('tasks.html', tasks=tasks_list)
+    return render_template('tasks.html', tasks=tasks_list, sid=sid)
 
 
 @app.route('/tests')
@@ -157,7 +157,7 @@ def tests():
             sid = int(sid)
         else:
             sid = -1
-    return render_template('test.html')
+    return render_template('test.html', sid=sid)
 
 @app.route('/course/<int:course_id>/test/<int:test_id>')
 def test(course_id, test_id):
@@ -185,7 +185,7 @@ def test(course_id, test_id):
     with open(test_file, 'r', encoding='utf-8') as file:
         test_data = json.load(file)
 
-    return render_template("test.html", test=test_data, course_id=course_id, test_id=test_id)
+    return render_template("test.html", test=test_data, course_id=course_id, test_id=test_id, sid=sid)
 
 @app.route('/course/<int:course_id>/test/<int:test_id>/result')
 def test_result(course_id, test_id):
@@ -266,7 +266,7 @@ def course(course_id):
     with open(course_file, 'r', encoding='utf-8') as file:
         course_data = json.load(file)
 
-    return render_template("course.html", course=course_data, course_id=course_id)
+    return render_template("course.html", course=course_data, course_id=course_id, sid=sid)
     
 
 @app.route('/')
@@ -279,7 +279,7 @@ def index():
             sid = int(sid)
         else:
             sid = -1
-    return render_template('index.html')
+    return render_template('index.html', sid=sid)
 
 
 if __name__ == '__main__':
