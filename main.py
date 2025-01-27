@@ -289,7 +289,28 @@ def course(course_id):
         course_data = json.load(file)
 
     return render_template("course.html", course=course_data, course_id=course_id, sid=str(sid))
-    
+
+app.route('/lk', methods=["POST", "GET"])
+def lk():
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
+    if (sid == -1):
+        return redirect(url_for("login"))
+    user = auth.getBySID(sid)
+
+    access = "Админ"
+    if (user.access == 1):
+        access = "Ученик"
+    elif (user.access == 2):
+        access = "Учитель"
+    print(access)
+    render_template("profile.html", sid=str(sid), username=user.username, access=access)
 
 @app.route('/')
 def index():
