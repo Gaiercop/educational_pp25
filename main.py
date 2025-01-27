@@ -219,6 +219,7 @@ def login():
         try:
             sid = auth.login(username, password)
             message = "Вы успешно вошли в систему"
+            return redirect(url_for('index') + '?sid=' + str(sid))
         except NameError:
             message = "Неверные логин или пароль"
 
@@ -257,14 +258,6 @@ def course(course_id):
             sid = int(sid)
         else:
             sid = -1
-    sid = request.args.get('sid')
-    if (type(sid) == NoneType):
-        sid = -1
-    else:
-        if (auth.checkSID(int(sid))):
-            sid = int(sid)
-        else:
-            sid = -1
     course_file = os.path.join(COURSES_DIR, f"{course_id}.json")
     
     if not os.path.exists(course_file):
@@ -279,15 +272,7 @@ def course(course_id):
 @app.route('/')
 def index():
     sid = request.args.get('sid')
-    if (type(sid) == NoneType):
-        sid = -1
-    else:
-        if (auth.checkSID(int(sid))):
-            sid = int(sid)
-        else:
-            sid = -1
-    sid = request.args.get('sid')
-    if (type(sid) == NoneType):
+    if (sid == None):
         sid = -1
     else:
         if (auth.checkSID(int(sid))):
