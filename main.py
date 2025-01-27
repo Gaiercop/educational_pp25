@@ -110,6 +110,7 @@ def tests():
         else:
             sid = -1
     return render_template('test.html')
+
 @app.route('/course/<int:course_id>/test/<int:test_id>')
 def test(course_id, test_id):
     sid = request.args.get('sid')
@@ -129,6 +130,20 @@ def test(course_id, test_id):
         test_data = json.load(file)
 
     return render_template("test.html", test=test_data, course_id=course_id, test_id=test_id)
+
+@app.route('/course/<int:course_id>/test/<int:test_id>/result')
+def test_result(course_id, test_id):
+    test_name = "Тест 1"
+    correct_answers = 3
+    total_questions = 5
+    return render_template(
+        'test_result.html', 
+        test={"name": test_name}, 
+        correct_answers=correct_answers, 
+        total_questions=total_questions, 
+        course_id=course_id, 
+        test_id=test_id
+    )
 
 
 @app.route('/login', methods=["POST", "GET"])
