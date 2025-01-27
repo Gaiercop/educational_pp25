@@ -265,6 +265,10 @@ def register():
 
     return render_template("register.html", message=message, sid="-1")
 
+@app.route('/profile', methods=["GET"])
+def profile():
+    return render_template("profile.html", sid="-1")
+
 
 # 322
 
