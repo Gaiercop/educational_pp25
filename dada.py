@@ -8,14 +8,6 @@ def course(course_id):
             sid = int(sid)
         else:
             sid = -1
-    sid = request.args.get('sid')
-    if (type(sid) == NoneType):
-        sid = -1
-    else:
-        if (auth.checkSID(int(sid))):
-            sid = int(sid)
-        else:
-            sid = -1
     course_file = os.path.join(COURSES_DIR, f"{course_id}.json")
 
     if not os.path.exists(course_file):
@@ -30,11 +22,26 @@ def course(course_id):
             print("Файл не найден.")
         except json.JSONDecodeError:
             print("Ошибка декодирования JSON.")
-    print(relo.get("Указательные местоимения", '#'))
-    print(course_data)
-    return render_template("course.html", course=course_data, course_id=course_id, relo=relo)
+
+    return render_template("course.html", course=course_data, course_id=course_id, sid=str(sid), relo = relo)
 @app.route('/teory/<nomer>')
 def teory(nomer):
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     try:
         with open("teory/"+str(nomer)+".json", "r", encoding='utf-8') as f:
             data = json.load(f)
@@ -50,4 +57,4 @@ def teory(nomer):
     except json.JSONDecodeError:
         print("Ошибка декодирования JSON.")
     print(data)
-    return render_template('teory.html', teory = data, relo = relo)
+    return render_template('teory.html', teory = data, relo = relo, sid = str(sid))
