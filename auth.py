@@ -61,6 +61,8 @@ class AuthManager(object):
             self.users[i] = fromJSONtoUser(self.users[i])
 
     def checkSID(self, sid):
+        if (sid == -1):
+            return False
         return self.sessions[sid] != -1
 
     def login(self, user, pwd):
