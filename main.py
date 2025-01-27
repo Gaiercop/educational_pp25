@@ -228,7 +228,7 @@ def login():
         try:
             sid = auth.login(username, password)
             message = "Вы успешно вошли в систему"
-            return redirect(url_for('lk') + '?sid=' + str(sid))
+            return redirect(url_for('index') + '?sid=' + str(sid))
         except NameError:
             message = "Неверные логин или пароль"
 
@@ -283,7 +283,7 @@ def lk():
     elif (user.access == 2):
         access = "Учитель"
     print(access)
-    render_template("profile.html", sid=str(sid))
+    render_template("profile.html", sid=str(sid), username=user.username, access=access)
 
 # 322
 
