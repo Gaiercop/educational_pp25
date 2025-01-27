@@ -1,3 +1,5 @@
+from types import NoneType
+
 from flask import Flask, render_template, request, redirect, url_for, abort
 from auth import *
 from get_themebyid import *
@@ -10,6 +12,15 @@ TESTS_DIR = "./tests"
 
 @app.route('/forum')
 def forum():
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
+
     theme_list = get_all_theme_ids()
     theme = []
     for i in theme_list:
@@ -19,6 +30,14 @@ def forum():
 
 @app.route('/forum/new_post', methods=['GET', 'POST'])
 def do_post():
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
@@ -29,6 +48,14 @@ def do_post():
 
 @app.route('/forum/topic/<theme_id>', methods=['GET', 'POST'])
 def show_theme(theme_id):
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     if request.method == 'POST':
         au = request.form['author']
         cont = request.form['content']
@@ -40,6 +67,14 @@ def show_theme(theme_id):
 
 @app.route('/catalogs')
 def catalogs():
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     jsfile = open("courses.json", "r", encoding="utf-8")
     arr = json.load(jsfile)
     catalogs = dict()
@@ -51,6 +86,14 @@ def catalogs():
 
 @app.route('/tasks')  # Определяем endpoint /tasks
 def tasks():
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     # Ваш код для обработки запроса /tasks
     tasks_list = ['Task 1', 'Task 2', 'Task 3']  # Пример списка
     return render_template('tasks.html', tasks=tasks_list)
@@ -58,9 +101,25 @@ def tasks():
 
 @app.route('/tests')
 def tests():
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     return render_template('test.html')
 @app.route('/course/<int:course_id>/test/<int:test_id>')
 def test(course_id, test_id):
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     test_file = os.path.join(TESTS_DIR, f"{course_id}_{test_id}.json")
     
     if not os.path.exists(test_file):
@@ -111,6 +170,14 @@ def register():
 
 @app.route('/course/<int:course_id>')
 def course(course_id):
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     course_file = os.path.join(COURSES_DIR, f"{course_id}.json")
     
     if not os.path.exists(course_file):
@@ -124,6 +191,14 @@ def course(course_id):
 
 @app.route('/')
 def index():
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
     return render_template('index.html')
 
 
