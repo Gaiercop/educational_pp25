@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, abort
 from auth import *
 from get_themebyid import *
+import os
 auth = AuthManager()
 
 app = Flask(__name__)
+COURSES_DIR = "./courses"
+TESTS_DIR = "./tests"
+
 @app.route('/forum')
 def forum():
     theme_list = get_all_theme_ids()
@@ -41,9 +45,17 @@ def catalogs():
         catalogs[key] = d[key]
     return render_template('catalogs.html', catalogs=catalogs)
 
-@app.route('/tests')
-def tests():
-    return render_template('test.html')
+@app.route('/course/<int:course_id>/test/<int:test_id>')
+def test(course_id, test_id):
+    test_file = os.path.join(TESTS_DIR, f"{course_id}_{test_id}.json")
+    
+    if not os.path.exists(test_file):
+        abort(404, description="Test not found")
+    
+    with open(test_file, 'r', encoding='utf-8') as file:
+        test_data = json.load(file)
+
+    return render_template("test.html", test=test_data, course_id=course_id, test_id=test_id)
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
@@ -80,9 +92,17 @@ def register():
 
 #322
 
-@app.route('/course/<id>')
-def course(id: int):
-    return render_template("course.html")
+@app.route('/course/<int:course_id>')
+def course(course_id):
+    course_file = os.path.join(COURSES_DIR, f"{course_id}.json")
+    
+    if not os.path.exists(course_file):
+        abort(404, description="Course not found")
+    
+    with open(course_file, 'r', encoding='utf-8') as file:
+        course_data = json.load(file)
+
+    return render_template("course.html", course=course_data, course_id=course_id)
     
 
 @app.route('/')

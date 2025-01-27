@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizzes</title>
-    <link rel="stylesheet" href="../static/css/test.css">
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
     <header class="main-header">
         <div class="container">
             <nav class="main-nav">
@@ -96,17 +92,4 @@
             </div>
         </div>
     </section>
-
-    <footer class="main-footer">
-        <div class="container">
-            <p>&copy; 2025 Educational Portal. All Rights Reserved.</p>
-            <nav>
-                <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
-            </nav>
-        </div>
-    </footer>
-</body>
-</html>
+{% endblock %}
