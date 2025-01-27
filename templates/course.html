@@ -5,7 +5,7 @@
 {% block content %}
     <link rel="stylesheet" href="../static/css/styles.css">
     <div class="container">
-        <div class="course-title">Course Name: {{ course.name }}</div>
+        <div class="course-title">{{ course.name }}</div>
         
         <div class="course-description">
             <p>{{ course.description }}</p>
@@ -23,7 +23,7 @@
             {% endfor %}
             
             {% for test in module.tests %}
-            <a href="/course/{{ course_id }}/test/{{ loop.index0 }}" style="text-decoration: none">
+            <a href="/course/{{ course_id }}/test/{{ loop.index }}" style="text-decoration: none">
                 <div class="lesson">
                     <div class="lesson-title">{{ test.name }}</div>
                     <div class="lesson-content">{{ test.description }}</div>
