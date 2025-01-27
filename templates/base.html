@@ -21,7 +21,11 @@
                 <li><a href="{{ url_for('catalogs')  + '?sid=' + sid }}">Курсы</a></li>
                 <li><a href="{{ url_for('forum')  + '?sid=' + sid  }}">Форум</a></li>
                 <li><a href="{{ url_for('tasks')  + '?sid=' + sid }}">База заданий</a></li>
+                {% if sid == '-1' %}
                 <li><a href="{{ url_for('login')  + '?sid=' + sid }}" class="btn-login">Войти</a></li>
+                {% else %}
+                <li><a href="{{ url_for('lk')  + '?sid=' + sid }}" class="btn-login">Личный кабинет</a></li>
+                {% endif %}
                 <li><a href="{{ url_for('register')  + '?sid=' + sid }}" class="btn-login">Зарегистрироваться</a></li>
 
             </ul>

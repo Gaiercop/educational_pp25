@@ -221,7 +221,6 @@ def login():
             sid = -1
         else:
             sid = -1
-    sid = request.args.get('sid')
     message = 'Введите логин и пароль'
     if request.method == 'POST':
         username = request.form['username']
@@ -229,7 +228,7 @@ def login():
         try:
             sid = auth.login(username, password)
             message = "Вы успешно вошли в систему"
-            return redirect(url_for('index') + '?sid=' + str(sid))
+            return redirect(url_for('lk') + '?sid=' + str(sid))
         except NameError:
             message = "Неверные логин или пароль"
 
@@ -247,7 +246,6 @@ def register():
             sid = -1
         else:
             sid = -1
-    sid = request.args.get('sid')
     message = 'Заполните поля для регистрации'
     if request.method == 'POST':
         username = request.form['username']
@@ -265,6 +263,27 @@ def register():
 
     return render_template("register.html", message=message, sid="-1")
 
+@app.route('/lk', methods=["POST", "GET"])
+def lk():
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
+    if (sid == -1):
+        return redirect(url_for("login"))
+    user = auth.getBySID(sid)
+
+    access = "Админ"
+    if (user.access == 1):
+        access = "Ученик"
+    elif (user.access == 2):
+        access = "Учитель"
+    print(access)
+    render_template("profile.html", sid=str(sid))
 
 # 322
 
