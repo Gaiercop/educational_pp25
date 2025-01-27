@@ -11,6 +11,40 @@ app = Flask(__name__)
 COURSES_DIR = "./courses"
 TESTS_DIR = "./tests"
 
+@app.route('/teory/<nomer>')
+def teory(nomer):
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
+    try:
+        with open("teory/"+str(nomer)+".json", "r", encoding='utf-8') as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        print("Файл не найден.")
+    except json.JSONDecodeError:
+        print("Ошибка декодирования JSON.")
+    try:
+        with open("relocate"+".json", "r", encoding='utf-8') as f:
+            relo = json.load(f)
+    except FileNotFoundError:
+        print("Файл не найден.")
+    except json.JSONDecodeError:
+        print("Ошибка декодирования JSON.")
+    print(data)
+    return render_template('teory.html', teory = data, relo = relo, sid = str(sid))
 
 @app.route('/forum')
 def forum():
@@ -267,7 +301,6 @@ def register():
 
     return render_template("register.html", message=message, sid="-1")
 
-
 @app.route('/profile', methods=["GET"])
 def profile():
     return render_template("profile.html", sid="-1")
@@ -292,9 +325,36 @@ def course(course_id):
 
     with open(course_file, 'r', encoding='utf-8') as file:
         course_data = json.load(file)
+        try:
+            with open("relocate" + ".json", "r", encoding='utf-8') as f:
+                relo = json.load(f)
+        except FileNotFoundError:
+            print("Файл не найден.")
+        except json.JSONDecodeError:
+            print("Ошибка декодирования JSON.")
 
-    return render_template("course.html", course=course_data, course_id=course_id, sid=str(sid))
+    return render_template("course.html", course=course_data, course_id=course_id, sid=str(sid), relo = relo)
+@app.route('/lk', methods=["POST", "GET"])
+def lk():
+    sid = request.args.get('sid')
+    if (type(sid) == NoneType):
+        sid = -1
+    else:
+        if (auth.checkSID(int(sid))):
+            sid = int(sid)
+        else:
+            sid = -1
+    if (sid == -1):
+        return redirect(url_for("login"))
+    user = auth.getBySID(sid)
 
+    access = "Админ"
+    if (user.access == 1):
+        access = "Ученик"
+    elif (user.access == 2):
+        access = "Учитель"
+    print(access)
+    render_template("profile.html", sid=str(sid), username=user.username, access=access)
 
 @app.route('/')
 def index():

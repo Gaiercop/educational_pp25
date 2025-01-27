@@ -61,6 +61,33 @@ body {
     border-radius: 4px;
 }
 
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    text-decoration: none;
+}
+
+.btn-custom {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
 .hero {
     background: #eaf7ef;
     text-align: center;
