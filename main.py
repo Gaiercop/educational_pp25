@@ -4,11 +4,14 @@ from flask import Flask, render_template, request, redirect, url_for, abort
 from auth import *
 from get_themebyid import *
 import os
+
 auth = AuthManager()
 
 app = Flask(__name__)
 COURSES_DIR = "./courses"
 TESTS_DIR = "./tests"
+
+
 @app.route('/teory/<nomer>')
 def teory(nomer):
     sid = request.args.get('sid')
@@ -28,21 +31,22 @@ def teory(nomer):
         else:
             sid = -1
     try:
-        with open("teory/"+str(nomer)+".json", "r", encoding='utf-8') as f:
+        with open("teory/" + str(nomer) + ".json", "r", encoding='utf-8') as f:
             data = json.load(f)
     except FileNotFoundError:
         print("Файл не найден.")
     except json.JSONDecodeError:
         print("Ошибка декодирования JSON.")
     try:
-        with open("relocate"+".json", "r", encoding='utf-8') as f:
+        with open("relocate" + ".json", "r", encoding='utf-8') as f:
             relo = json.load(f)
     except FileNotFoundError:
         print("Файл не найден.")
     except json.JSONDecodeError:
         print("Ошибка декодирования JSON.")
     print(data)
-    return render_template('teory.html', teory = data, relo = relo, sid = str(sid))
+    return render_template('teory.html', teory=data, relo=relo, sid=str(sid))
+
 
 @app.route('/forum')
 def forum():
@@ -150,7 +154,7 @@ def catalogs():
     return render_template('catalogs.html', catalogs=catalogs, sid=str(sid))
 
 
-@app.route('/tasks')  # Определяем endpoint /tasks
+@app.route('/tasks')  # Определяем endpoint /tasks.json
 def tasks():
     sid = request.args.get('sid')
     if (type(sid) == NoneType):
@@ -168,9 +172,19 @@ def tasks():
             sid = int(sid)
         else:
             sid = -1
-    # Ваш код для обработки запроса /tasks
-    tasks_list = ['Task 1', 'Task 2', 'Task 3']  # Пример списка
-    return render_template('tasks.html', tasks=tasks_list, sid=str(sid))
+    selected_tags = request.args.getlist('tags')  # Получаем выбранные теги из параметров запроса
+    with open("tasks.json", 'r', encoding='utf-8') as f:
+        tsks = json.load(f)
+        filtered_tasks = tsks
+
+    if selected_tags:  # Фильтрация, если имеются выбранные теги
+        filtered_tasks = [task for task in tsks if any(tag in task['tags'] for tag in selected_tags)]
+
+    all_tags = set()
+    for task in tsks:
+        all_tags.update(task['tags'])
+
+    return render_template('tasks.html', tasks=filtered_tasks, all_tags=all_tags, sid=str(sid))
 
 
 @app.route('/tests')
@@ -193,6 +207,7 @@ def tests():
             sid = -1
     return render_template('test.html', sid=str(sid))
 
+
 @app.route('/course/<int:course_id>/test/<int:test_id>')
 def test(course_id, test_id):
     sid = request.args.get('sid')
@@ -212,14 +227,15 @@ def test(course_id, test_id):
         else:
             sid = -1
     test_file = os.path.join(TESTS_DIR, f"{course_id}_{test_id}.json")
-    
+
     if not os.path.exists(test_file):
         abort(404, description="Test not found")
-    
+
     with open(test_file, 'r', encoding='utf-8') as file:
         test_data = json.load(file)
 
     return render_template("test.html", test=test_data, course_id=course_id, test_id=test_id, sid=str(sid))
+
 
 @app.route('/course/<int:course_id>/test/<int:test_id>/result')
 def test_result(course_id, test_id):
@@ -235,11 +251,11 @@ def test_result(course_id, test_id):
     correct_answers = 3
     total_questions = 5
     return render_template(
-        'test_result.html', 
-        test={"name": test_name}, 
-        correct_answers=correct_answers, 
-        total_questions=total_questions, 
-        course_id=course_id, 
+        'test_result.html',
+        test={"name": test_name},
+        correct_answers=correct_answers,
+        total_questions=total_questions,
+        course_id=course_id,
         test_id=test_id
     )
 
@@ -325,7 +341,9 @@ def course(course_id):
         except json.JSONDecodeError:
             print("Ошибка декодирования JSON.")
 
-    return render_template("course.html", course=course_data, course_id=course_id, sid=str(sid), relo = relo)
+    return render_template("course.html", course=course_data, course_id=course_id, sid=str(sid), relo=relo)
+
+
 @app.route('/profile', methods=["POST", "GET"])
 def profile():
     sid = request.args.get('sid')
@@ -347,6 +365,7 @@ def profile():
         access = "Учитель"
     print(access)
     return render_template("profile.html", sid=str(sid), username=user.username, access=access)
+
 
 @app.route('/')
 def index():
