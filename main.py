@@ -248,15 +248,16 @@ def test_result(course_id, test_id):
         else:
             sid = -1
     test_name = "Тест 1"
-    correct_answers = 3
-    total_questions = 5
+    correct_answers = 1
+    total_questions = 1
     return render_template(
         'test_result.html',
         test={"name": test_name},
         correct_answers=correct_answers,
         total_questions=total_questions,
         course_id=course_id,
-        test_id=test_id
+        test_id=test_id,
+        sid=str(sid)
     )
 
 

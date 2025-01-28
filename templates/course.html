@@ -89,7 +89,8 @@
         <div class="course-description">
             <p>{{ course.description }}</p>
         </div>
-
+        
+        {% set cnt = namespace(value=0) %}
         {% for module in course.modules %}
         <div class="section">
             <div class="section-title">{{ module.name }}</div>
@@ -102,12 +103,13 @@
             {% endfor %}
             
             {% for test in module.tests %}
-            <a href="/course/{{ course_id }}/test/{{ loop.index }}" style="text-decoration: none">
-                <div class="lesson">
-                    <div class="lesson-title">{{ test.name }}</div>
-                    <div class="lesson-content">{{ test.description }}</div>
-                </div>
-            </a>
+                <a href="/course/{{ course_id }}/test/{{ cnt.value }}" style="text-decoration: none">
+                    <div class="lesson">
+                        <div class="lesson-title">{{ test.name }}</div>
+                        <div class="lesson-content">{{ test.description }}</div>
+                    </div>
+                </a>
+                {% set cnt.value = cnt.value + 1 %}
             {% endfor %}
         </div>
         {% endfor %}
