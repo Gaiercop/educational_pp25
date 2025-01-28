@@ -164,14 +164,6 @@ def tasks():
             sid = int(sid)
         else:
             sid = -1
-    sid = request.args.get('sid')
-    if (type(sid) == NoneType):
-        sid = -1
-    else:
-        if (auth.checkSID(int(sid))):
-            sid = int(sid)
-        else:
-            sid = -1
     selected_tags = request.args.getlist('tags')  # Получаем выбранные теги из параметров запроса
     with open("tasks.json", 'r', encoding='utf-8') as f:
         tsks = json.load(f)
@@ -248,15 +240,16 @@ def test_result(course_id, test_id):
         else:
             sid = -1
     test_name = "Тест 1"
-    correct_answers = 3
-    total_questions = 5
+    correct_answers = 1
+    total_questions = 1
     return render_template(
         'test_result.html',
         test={"name": test_name},
         correct_answers=correct_answers,
         total_questions=total_questions,
         course_id=course_id,
-        test_id=test_id
+        test_id=test_id,
+        sid=str(sid)
     )
 
 
@@ -340,8 +333,7 @@ def course(course_id):
             print("Файл не найден.")
         except json.JSONDecodeError:
             print("Ошибка декодирования JSON.")
-
-    return render_template("course.html", course=course_data, course_id=course_id, sid=str(sid), relo=relo)
+    return render_template("course.html", sid=str(sid), course=course_data, course_id=course_id, relo=relo)
 
 
 @app.route('/profile', methods=["POST", "GET"])

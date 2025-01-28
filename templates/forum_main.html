@@ -98,7 +98,7 @@
         <div class="search-container">
             <input type="text" placeholder="Поиск..." class="search-input">
             <button class="search-button">Искать</button>
-            <a href="/forum/new_post" class="new-theme-button">Новая Тема</a>
+            <a href="/forum/new_post?sid={{sid}}" class="new-theme-button">Новая Тема</a>
         </div>
     </div>
 </section>
@@ -107,7 +107,7 @@
         <div class="theme-list">
             {% for theme in popular_themes %}
             <div class="theme-item">
-                <h3 class="theme-title"><a href="/forum/topic/{{theme[0]}}">{{ theme[1][:100] }}</a></h3>
+                <h3 class="theme-title"><a href="/forum/topic/{{theme[0]}}?sid={{sid}}">{{ theme[1][:100] }}</a></h3>
                 <p>{{ theme[2][:100] }}</p>
             </div>
             {% endfor %}
