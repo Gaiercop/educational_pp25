@@ -35,11 +35,6 @@ body {
     margin-right: auto;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
 
 .course-title {
     font-size: 2em;

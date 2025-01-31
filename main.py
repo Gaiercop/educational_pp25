@@ -119,12 +119,20 @@ def show_theme(theme_id):
         else:
             sid = -1
     if request.method == 'POST':
-        au = request.form['author']
+        if(sid == -1):
+            au = "Незарегистрированный пользователь"
+        else:
+            user = auth.getBySID(sid)
+            au = user.username
         cont = request.form['content']
         add_new_message(theme_id, au, cont)
     theme = get_theme_by_id(theme_id)
     posts = get_messages_by_theme_id(theme_id)
-    return render_template('theme_page.html', theme=theme, posts=posts, sid=str(sid))
+    if(sid == -1):
+        rq = 1
+    else:
+        rq = 0
+    return render_template('theme_page.html', theme=theme, posts=posts, sid=str(sid),rq = rq)
 
 
 @app.route('/catalogs')
