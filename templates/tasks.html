@@ -6,30 +6,130 @@
 <head>
     <meta charset="UTF-8">
     <title>База заданий</title>
-    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <style>
         .task-container {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .task-container h3 {
-           margin-bottom: 0.5rem;
-           margin-top: 0;
-        }
-        .task-container p {
-            margin-bottom: 0.5rem;
-            margin-top: 0;
-        }
-        .task-container ul {
-          padding-left: 20px;
-          margin-bottom: 0.5rem;
-            margin-top: 0;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-       .tags{
-        margin-top: 10px;
-       }
+        .task-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .task-container h3 {
+            margin-bottom: 1rem;
+            margin-top: 0;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .task-container p {
+            margin-bottom: 0.75rem;
+            margin-top: 0;
+            color: #555;
+        }
+
+        .task-container ul {
+            padding-left: 20px;
+            margin-bottom: 0.75rem;
+            margin-top: 0;
+            color: #555;
+        }
+
+        .task-container ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .task-container .tags {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .task-container .tags span {
+            background: #4CAF50;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .task-container .difficulty {
+            margin-top: 1rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .filter-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-section label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+            color: #333;
+        }
+
+        .filter-section .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-section .tags label {
+            background: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .filter-section .tags label:hover {
+            background: #4CAF50;
+            color: #fff;
+        }
+
+        .filter-section button {
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .filter-section button:hover {
+            background: #45a049;
+        }
+
+        @media (max-width: 768px) {
+            .task-container {
+                padding: 15px;
+            }
+
+            .task-container h3 {
+                font-size: 1.3em;
+            }
+
+            .filter-section .tags {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -37,35 +137,41 @@
     <div class="container">
         <h1>База заданий</h1>
 
-        <form method="GET">
-            <div class="tags">
-                <label>Фильтр по тегам:</label><br>
-                {% for tag in all_tags %}
-                <input type="checkbox" id="{{tag}}" name="tags" value="{{ tag }}">
-                <label for="{{tag}}">{{ tag }}</label><br>
-                {% endfor %}
-                </br>
+        <div class="filter-section">
+            <form method="GET">
+                <label>Фильтр по тегам:</label>
+                <div class="tags">
+                    {% for tag in all_tags %}
+                    <label>
+                        <input type="checkbox" id="{{tag}}" name="tags" value="{{ tag }}">
+                        {{ tag }}
+                    </label>
+                    {% endfor %}
+                </div>
                 <button type="submit">Применить фильтр</button>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
 
-    {% for task in tasks %}
-    <div class="task-container">
-        <h3>Задание {{ task.id }}</h3>
-        <p>{{ task.text }}</p>
-        {% if task.options %}
-        <p><strong>Варианты:</strong></p>
-        <ul>
-            {% for option in task.options %}
-            <li>{{ option }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        <p><strong>Теги:</strong> {{ ', '.join(task.tags) }}</p>
-        <p><strong>Сложность:</strong> {{task.difficulty}}</p>
-    </div>
-    {% endfor %}
+        {% for task in tasks %}
+        <div class="task-container">
+            <h3>Задание {{ task.id }}</h3>
+            <p>{{ task.text }}</p>
+            {% if task.options %}
+            <p><strong>Варианты:</strong></p>
+            <ul>
+                {% for option in task.options %}
+                <li>{{ option }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="tags">
+                {% for tag in task.tags %}
+                {{ tag }};
+                {% endfor %}
+            </div>
+            <p class="difficulty"><strong>Сложность:</strong> {{ task.difficulty }}</p>
+        </div>
+        {% endfor %}
     </div>
 </main>
 </body>

@@ -1,5 +1,6 @@
+/* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
@@ -12,20 +13,29 @@ body {
     padding: 20px;
 }
 
+/* Course Title */
 .course-title {
     font-size: 2em;
     margin: 20px 0;
     text-align: center;
+    color: #333;
 }
 
+/* Course Description */
 .course-description {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    transition: box-shadow 0.3s;
 }
 
+.course-description:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Section Styles */
 .section {
     margin-bottom: 30px;
 }
@@ -36,12 +46,19 @@ body {
     color: #333;
 }
 
+/* Lesson Styles */
 .lesson {
     background: #fff;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.lesson:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .lesson-title {
@@ -54,11 +71,11 @@ body {
     color: #666;
 }
 
-
+/* Footer Styles */
 .main-footer {
     background: #333;
     color: #fff;
-    padding: 20px 0;
+    padding: 40px 0;
     text-align: center;
 }
 
@@ -75,13 +92,50 @@ body {
     color: #fff;
     text-decoration: none;
     font-size: 0.9em;
+    transition: color 0.3s;
 }
 
+.main-footer nav ul li a:hover {
+    color: #4CAF50;
+}
+
+.main-footer .social-icons {
+    margin-top: 20px;
+}
+
+.main-footer .social-icons a {
+    color: #fff;
+    margin: 0 10px;
+    font-size: 1.2em;
+    transition: color 0.3s;
+}
+
+.main-footer .social-icons a:hover {
+    color: #4CAF50;
+}
+
+/* Card Styles */
 .card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .course-description, .lesson {
+        padding: 15px;
+    }
+
+    .section-title {
+        font-size: 1.3em;
+    }
+
+    .lesson-title {
+        font-size: 1.1em;
+    }
 }

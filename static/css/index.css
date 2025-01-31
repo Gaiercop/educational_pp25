@@ -1,12 +1,12 @@
+/* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f9f9f9;
     color: #333;
     line-height: 1.6;
     height: 100%;
-    justify-content: space-between;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -18,6 +18,7 @@ body {
     padding: 0 20px;
 }
 
+/* Header Styles */
 .main-header {
     background: #4CAF50;
     color: #fff;
@@ -25,6 +26,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .main-header .logo {
@@ -52,6 +57,13 @@ body {
     color: #fff;
     text-decoration: none;
     font-size: 1em;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.main-header .main-nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .main-header .main-nav ul li .btn-login {
@@ -59,8 +71,14 @@ body {
     color: #4CAF50;
     padding: 5px 10px;
     border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
+.main-header .main-nav ul li .btn-login:hover {
+    background-color: #f0f0f0;
+}
+
+/* Button Styles */
 .btn {
     display: inline-block;
     font-weight: 400;
@@ -72,6 +90,7 @@ body {
     padding: 10px 15px;
     background-color: #4CAF50;
     text-decoration: none;
+    transition: background-color 0.3s, opacity 0.3s;
 }
 
 .btn-custom {
@@ -88,10 +107,12 @@ body {
     opacity: 0.9;
 }
 
+/* Hero Section */
 .hero {
-    background: #eaf7ef;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
     text-align: center;
-    padding: 60px 20px;
+    padding: 80px 20px;
+    color: #fff;
 }
 
 .hero h1 {
@@ -105,17 +126,23 @@ body {
 }
 
 .hero .btn-primary {
-    background: #4CAF50;
-    color: #fff;
+    background: #fff;
+    color: #4CAF50;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;
     font-size: 1.1em;
+    transition: background-color 0.3s, color 0.3s;
 }
 
+.hero .btn-primary:hover {
+    background-color: #f0f0f0;
+}
+
+/* Features Section */
 .features {
     background: #fff;
-    padding: 40px 20px;
+    padding: 60px 20px;
     text-align: center;
 }
 
@@ -129,9 +156,10 @@ body {
     color: #4CAF50;
 }
 
+/* Popular Courses Section */
 .popular-courses {
     background: #f4f4f4;
-    padding: 40px 20px;
+    padding: 60px 20px;
 }
 
 .popular-courses h2 {
@@ -144,6 +172,7 @@ body {
     display: flex;
     justify-content: space-between;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .course-item {
@@ -151,8 +180,14 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    flex: 1;
+    flex: 1 1 calc(33.333% - 40px);
     text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.course-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .course-item h3 {
@@ -173,12 +208,18 @@ body {
     text-decoration: none;
     border-radius: 5px;
     font-size: 1em;
+    transition: background-color 0.3s, opacity 0.3s;
 }
 
+.course-item .btn-secondary:hover {
+    opacity: 0.9;
+}
+
+/* Footer Styles */
 .main-footer {
     background: #333;
     color: #fff;
-    padding: 20px 0;
+    padding: 40px 0;
     text-align: center;
     margin-top: auto;
     flex-shrink: 0;
@@ -197,4 +238,40 @@ body {
     color: #fff;
     text-decoration: none;
     font-size: 0.9em;
+    transition: color 0.3s;
+}
+
+.main-footer nav ul li a:hover {
+    color: #4CAF50;
+}
+
+.main-footer .social-icons {
+    margin-top: 20px;
+}
+
+.main-footer .social-icons a {
+    color: #fff;
+    margin: 0 10px;
+    font-size: 1.2em;
+    transition: color 0.3s;
+}
+
+.main-footer .social-icons a:hover {
+    color: #4CAF50;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-header .main-nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .course-list {
+        flex-direction: column;
+    }
+
+    .course-item {
+        flex: 1 1 100%;
+    }
 }
