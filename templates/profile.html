@@ -1,28 +1,114 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    .profile-container {
+        background: #f8f9fa;
+        min-height: 100vh;
+    }
+
+    .stat-item {
+        transition: all 0.3s ease;
+        background: white;
+        border-radius: 10px;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .progress {
+        height: 12px;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .stat-row {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        gap: 20px;
+    }
+
+    .category-name {
+        flex: 0 0 25%;
+        min-width: 200px;
+    }
+
+    .progress-container {
+        flex: 1;
+    }
+
+    .stats-numbers {
+        flex: 0 0 15%;
+        text-align: right;
+    }
+
+    @media (max-width: 768px) {
+        .stat-row {
+            flex-direction: column;
+            align-items: start;
+        }
+
+        .category-name,
+        .progress-container,
+        .stats-numbers {
+            width: 100%;
+        }
+    }
+    .bg-orange {
+        background-color: #ffa500 !important;
+    }
+
+    .bg-info {
+        background-color: #50c878 !important; /* Светло-зеленый */
+    }
+
+    .bg-soft-secondary {
+        background-color: #f8f9fa !important;
+    }
+
+    /* Анимация прогресс-бара */
+    .progress-bar {
+        transition: width 1s ease-in-out, background-color 0.5s ease;
+    }
+    .progress {
+        height: 12px;
+        border-radius: 6px;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar {
+        transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        background-color: #6c757d !important; /* Серый цвет Bootstrap */
+    }
+
+    .bg-light {
+        background-color: #f8f9fa !important; /* Светлый фон для контраста */
+    }
+</style>
+
 <div class="container profile-container py-5">
     <div class="row g-4">
         <!-- Боковая панель профиля -->
         <div class="col-lg-3">
             <div class="card profile-card border-0 shadow-lg">
                 <div class="card-body text-center px-4 py-5">
-                    <div class="avatar-wrapper mb-4">
-                        <div class="avatar-icon bg-soft-success text-success">
-                            <i class="fas fa-user-graduate fa-3x"></i>
-                        </div>
+                    <div class="avatar-icon bg-soft-success text-success rounded-circle p-4 mb-3">
+                        <i class="fas fa-user-graduate fa-3x"></i>
                     </div>
                     <h3 class="mb-3 fw-bold text-success">{{ username }}</h3>
                     <div class="badge bg-soft-success text-success fs-6 rounded-pill px-3 py-2">
                         <i class="fas fa-shield-alt me-2"></i>{{ access }}
                     </div>
-                    
+
                     {% if access == "Учитель" %}
                     <div class="mt-5">
-                        <a href="{{ url_for('create_group', sid=request.args.get('sid')) }}" 
-                           class="btn btn-success btn-lg w-100 rounded-pill d-flex align-items-center justify-content-center">
-                            <i class="fas fa-plus-circle me-3 fs-5"></i>
-                            <span>Новая группа</span>
+                        <a href="{{ url_for('create_group', sid=request.args.get('sid')) }}"
+                           class="btn btn-success btn-lg w-100 rounded-pill">
+                            <i class="fas fa-plus-circle me-3"></i>
+                            Новая группа
                         </a>
                     </div>
                     {% endif %}
@@ -32,104 +118,78 @@
 
         <!-- Основной контент -->
         <div class="col-lg-9">
-            <!-- Статистика -->
-            <div class="card stats-card border-0 shadow-sm mb-4">
+            <!-- Статистика активности -->
+            <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body p-4">
-                    <h4 class="card-title mb-4 text-success fw-bold">
+                    <h4 class="text-success fw-bold mb-4">
                         <i class="fas fa-chart-pie me-2"></i>Статистика активности
                     </h4>
-                    <div class="row g-3 stats-grid">
+                    <div class="row g-3">
                         <div class="col-md-4">
-                            <div class="stat-item bg-soft-success p-4 rounded-4 text-center">
-                                <div class="stat-value text-success display-6 fw-bold">{{ groups|length }}</div>
-                                <div class="stat-label text-muted mt-2">Мои группы</div>
-                                <div class="stat-icon text-success mt-3">
-                                    <i class="fas fa-users fa-2x"></i>
-                                </div>
+                            <div class="stat-item p-3 text-center">
+                                <div class="text-success display-6 fw-bold">{{ groups|length }}</div>
+                                <div class="text-muted">Мои группы</div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="stat-item bg-soft-success p-4 rounded-4 text-center">
-                                <div class="stat-value text-success display-6 fw-bold">{{ students_count }}</div>
-                                <div class="stat-label text-muted mt-2">Учеников</div>
-                                <div class="stat-icon text-success mt-3">
-                                    <i class="fas fa-user-friends fa-2x"></i>
-                                </div>
+                            <div class="stat-item p-3 text-center">
+                                <div class="text-success display-6 fw-bold">{{ students_count }}</div>
+                                <div class="text-muted">Учеников</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item p-3 text-center">
+                                <div class="text-success display-6 fw-bold">{{ total_tasks }}</div>
+                                <div class="text-muted">Всего заданий</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Список групп -->
-            <div class="card groups-card border-0 shadow-sm">
+            <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h4 class="card-title text-success fw-bold m-0">
-                            <i class="fas fa-layer-group me-3"></i>Мои группы
-                        </h4>
-                        <div class="dropdown">
-                            <button class="btn btn-link text-success" type="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-ellipsis-v fa-lg"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-sync me-2"></i>Обновить</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    <h4 class="text-success fw-bold mb-4">
+                        <i class="fas fa-users me-2"></i>Мои группы
+                    </h4>
 
                     {% if groups %}
                     <div class="group-list">
                         {% for group in groups %}
-                        <a href="{{ url_for('group_page', group_id=group.id, sid=request.args.get('sid')) }}" 
-                           class="group-item card border-0 shadow-sm mb-3 text-decoration-none hover-effect">
-                            <div class="card-body p-4">
-                                <div class="row align-items-center g-3">
-                                    <div class="col-auto">
-                                        <div class="group-icon bg-soft-success text-success rounded-3 p-3">
-                                            <i class="fas fa-users fa-2x"></i>
+                        <div class="stat-item mb-3">
+                            <a href="{{ url_for('group_page', group_id=group.id, sid=request.args.get('sid')) }}"
+                               class="text-decoration-none text-dark">
+                                <div class="p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5 class="text-success fw-bold mb-1">{{ group.name }}</h5>
+                                            <div class="text-muted small">
+                                                <span class="me-3">
+                                                    <i class="fas fa-users me-1"></i>
+                                                    {{ group.members_count }} участников
+                                                </span>
+                                                <span class="badge bg-{{ 'success' if group.access_level == 'public' else 'danger' }}">
+                                                    {{ 'Публичная' if group.access_level == 'public' else 'Приватная' }}
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col">
-                                        <h5 class="group-title text-success mb-1 fw-bold">{{ group.name }}</h5>
-                                        <div class="group-meta text-muted small">
-                                            <span class="me-3">
-                                                <i class="fas fa-user-clock me-1"></i>
-                                                {{ group.created_at|datetime_format }}
-                                            </span>
-                                            <span class="me-3">
-                                                <i class="fas fa-users me-1"></i>
-                                                {{ group.members_count }} участников
-                                            </span>
-                                            <span class="badge bg-{{ 'success' if group.access_level == 'public' else 'danger' }} rounded-pill">
-                                                {{ 'Публичная' if group.access_level == 'public' else 'Приватная' }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <div class="group-actions">
-                                            {% if group.creator_id == username %}
-                                            <span class="badge bg-warning text-dark rounded-pill px-3 py-2">
-                                                <i class="fas fa-crown me-2"></i>Создатель
-                                            </span>
-                                            {% endif %}
+                                        <div class="text-muted small">
+                                            {{ group.created_at|datetime_format }}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                         {% endfor %}
                     </div>
                     {% else %}
-                    <div class="empty-state text-center py-5">
-                        <div class="empty-icon mb-4">
-                            <i class="fas fa-user-friends fa-4x text-success opacity-25"></i>
-                        </div>
-                        <h5 class="text-muted mb-4">У вас пока нет ни одной группы</h5>
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-user-friends fa-3x opacity-25 mb-3"></i>
+                        <h5>У вас пока нет ни одной группы</h5>
                         {% if access == "Учитель" %}
-                        <a href="{{ url_for('create_group', sid=request.args.get('sid')) }}" 
-                           class="btn btn-success btn-lg px-5 rounded-pill">
-                            <i class="fas fa-plus-circle me-3"></i>Создать группу
+                        <a href="{{ url_for('create_group', sid=request.args.get('sid')) }}"
+                           class="btn btn-success mt-3">
+                            <i class="fas fa-plus-circle me-2"></i>Создать группу
                         </a>
                         {% endif %}
                     </div>
@@ -137,6 +197,56 @@
                 </div>
             </div>
         </div>
+            <!-- Статистика выполнения -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h4 class="text-success fw-bold mb-4">
+                        <i class="fas fa-clipboard-check me-2"></i>Статистика выполнения
+                    </h4>
+
+                    {% if tasks_stats %}
+                    <div class="stats-list">
+                        {% for category, stats in tasks_stats.items() %}
+                        {% set percent = (stats.correct / stats.total * 100)|round|int if stats.total > 0 else 0 %}
+                        <div class="stat-item mb-3">
+                            <div class="stat-row">
+                                <div class="category-name">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="bg-soft-success p-2 rounded">
+                                            <i class="fas fa-book-open text-success"></i>
+                                        </div>
+                                        <h5 class="mb-0 text-success fw-bold">{{ category }}</h5>
+                                    </div>
+                                </div>
+
+                                <div class="progress-container">
+    <div class="progress-container">
+        <div class="progress bg-light
+            {% if percent <= 20 %}bg-danger
+            {% elif percent <= 40 %}bg-warning
+            {% elif percent <= 60 %}bg-orange
+            {% elif percent <= 80 %}bg-info
+            {% else %}bg-success{% endif %}"
+            style="width: {{ percent }}%">
+        </div>
+    </div>
+</div>
+                                <div class="stats-numbers">
+                                    <div class="text-success fw-bold">{{ stats.correct }}/{{ stats.total }}</div>
+                                    <div class="text-success">{{ percent }}%</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-clipboard-list fa-3x opacity-25 mb-3"></i>
+                        <h5>Нет данных для отображения</h5>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
     </div>
 </div>
 {% endblock %}

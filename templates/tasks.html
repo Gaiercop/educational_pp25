@@ -8,12 +8,6 @@
     <title>База заданий</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <style>
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
         .tasks-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -146,6 +140,7 @@
                 {% if task.options %}
                 <form method="POST" action="{{ url_for('submit_task') }}">
                     <input type="hidden" name="task_id" value="{{ task.id }}">
+                    <input type="hidden" name="task_type" value="{{ task.type }}">
                     <input type="hidden" name="sid" value="{{ sid }}">
 
                     <div class="answers">

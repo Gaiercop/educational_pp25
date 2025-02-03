@@ -295,6 +295,7 @@ app.teardown_appcontext(close_db)
 def submit_task():
     sid = request.form.get('sid')
     task_id = request.form.get('task_id')
+    task_type = request.form.get('task_type')
     selected_answer = request.form.get('answer')
     user = auth.get_user_by_session(sid)
     if (user):
@@ -312,7 +313,6 @@ def submit_task():
         return "Задача не найдена", 404
 
     # Определяем тип задачи по первому тегу
-    task_type = task_id
 
     # Нормализуем ответы для сравнения
     correct_answer = current_task['answer'].strip().lower()
@@ -425,7 +425,10 @@ def profile():
     user = auth.get_user_by_session(sid)
 
     user = auth.get_user_by_session(sid)
-    
+    userid = user.username
+    tasks_stats = get_tasks_stats(userid)
+    total_tasks = sum(stats['total'] for stats in tasks_stats.values())
+
     if not user:
         return redirect(url_for('login'))
     
@@ -447,7 +450,8 @@ def profile():
                         username=user.username,
                         access="Учитель" if int(user.access) == 2 else "Ученик",
                         groups=user_groups,
-                        students_count=students_count)
+                        students_count=students_count, tasks_stats=tasks_stats,
+        total_tasks=total_tasks)
 
 @app.route('/course/<int:course_id>')
 def course(course_id):

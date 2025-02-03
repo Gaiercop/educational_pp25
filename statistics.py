@@ -45,6 +45,36 @@ def get_task_stats(userid, task_type):
     return result if result else (0, 0)
 
 
+from collections import defaultdict
+
+
+def get_tasks_stats(userid):
+    conn = sqlite3.connect('students_tasks.db')
+    cursor = conn.cursor()
+
+    # Получаем статистику по типам задач
+    cursor.execute('''
+        SELECT 
+            task_type,
+            SUM(task_count) as total,
+            SUM(right_task_count) as correct
+        FROM students_tasks
+        WHERE userid = ?
+        GROUP BY task_type
+    ''', (userid,))
+
+    stats = cursor.fetchall()
+    conn.close()
+
+    # Формируем словарь
+    tasks_stats = defaultdict(dict)
+    for task_type, total, correct in stats:
+        tasks_stats[task_type] = {
+            "total": total,
+            "correct": correct
+        }
+
+    return dict(tasks_stats)
 def reset_database():
     """Полностью пересоздает таблицу с новыми полями"""
     cursor.execute('DROP TABLE IF EXISTS students_tasks')
