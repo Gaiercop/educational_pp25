@@ -33,13 +33,16 @@ def datetime_format(value):
     return datetime.fromisoformat(value).strftime('%d.%m.%Y %H:%M')
 
 
+
 def get_user_groups(username: str):
     groups_file = 'groups/groups.json'
     user_groups = []
 
+
     try:
         with open(groups_file, 'r', encoding='utf-8') as f:
             all_groups = json.load(f)
+
 
         for group in all_groups:
             if username in group.get('members', []) or username == group.get('creator_id'):
@@ -86,6 +89,7 @@ def get_group_by_id(group_id):
     if not os.path.exists(groups_file):
         return None
 
+
     with open(groups_file, 'r', encoding='utf-8') as f:
         groups = json.load(f)
         return next((g for g in groups if g['id'] == group_id), None)
@@ -107,17 +111,21 @@ def group_page(group_id):
     sid = request.args.get('sid')
     user = auth.get_user_by_session(sid)
 
+
     group = get_group_by_id(group_id)
     if not group:
         abort(404)
 
+
     if not user or user.username not in group['members']:
         return redirect(url_for('login'))
+
 
     error = None
     if request.method == 'POST' and user.username == group['creator_id']:
         action = request.form.get('action')
         target_user = request.form.get('username')
+
 
         if action == 'add':
             if auth.find_user(target_user):
@@ -128,6 +136,7 @@ def group_page(group_id):
                     error = "Пользователь уже в группе"
             else:
                 error = "Пользователь не найден"
+
 
         elif action == 'remove':
             if target_user in group['members'] and target_user != group['creator_id']:
