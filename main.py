@@ -339,11 +339,25 @@ def profile():
     if not user:
         return redirect(url_for('login'))
     
+    user_groups = get_user_groups(user.username)
+    
+    all_members = set()
+    for group in user_groups:
+        all_members.update(group.get('members', []))
+    
+    all_users = auth.users
+    
+    students_count = sum(
+        1 for username in all_members 
+        if any(u.username == username and int(u.access) == 1 for u in all_users)
+    )
+
     return render_template("profile.html",
                         sid=sid,
                         username=user.username,
                         access="Учитель" if int(user.access) == 2 else "Ученик",
-                        groups=get_user_groups(user.username))
+                        groups=user_groups,
+                        students_count=students_count)
 
 @app.route('/course/<int:course_id>')
 def course(course_id):
