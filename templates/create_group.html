@@ -1,14 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Создать новую группу{% endblock %}
-
 {% block content %}
 <section class="create-group-section">
     <div class="container">
         <div class="group-creation-card">
             <h2 class="section-title">Создать новую группу</h2>
             <form class="group-form" method="POST" enctype="multipart/form-data">
-                <!-- Вывод ошибок формы -->
                 {% if error %}
                 <div class="form-error alert btn-danger">
                     {{ error }}
@@ -17,7 +14,7 @@
 
                 <div class="form-group">
                     <label for="group-name" class="form-label">
-                        <i class="fas fa-users"></i> Название группы
+                        <i class="fas fa-users"></i> Название группы *
                     </label>
                     <input type="text" 
                            id="group-name" 
@@ -34,7 +31,7 @@
                     <textarea id="group-description" 
                               name="description" 
                               class="form-input" 
-                              rows="4"
+                              rows="3"
                               placeholder="Добавьте описание группы"></textarea>
                 </div>
 
@@ -52,19 +49,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-image"></i> Аватар группы
+                        <label for="members" class="form-label">
+                            <i class="fas fa-user-plus"></i> Участники
                         </label>
-                        <div class="file-upload">
-                            <input type="file" 
-                                   id="group-avatar" 
-                                   name="avatar" 
-                                   accept="image/*"
-                                   class="upload-input">
-                            <label for="group-avatar" class="upload-label">
-                                Выберите файл
-                            </label>
-                        </div>
+                        <input type="text" 
+                               id="members" 
+                               name="members" 
+                               class="form-input"
+                               placeholder="Введите логины через запятую">
+                        <small class="form-text text-muted">Пример: user1, user2, user3</small>
                     </div>
                 </div>
 
