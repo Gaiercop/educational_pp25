@@ -275,3 +275,138 @@ body {
         flex: 1 1 100%;
     }
 }
+
+/* Group Creation Styles */
+.create-group-section {
+    padding: 40px 0;
+    min-height: calc(100vh - 200px);
+}
+
+.group-creation-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.section-title {
+    text-align: center;
+    color: #4CAF50;
+    font-size: 2.2em;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #555;
+    font-size: 1.1em;
+}
+
+.form-label i {
+    margin-right: 8px;
+    color: #4CAF50;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+    outline: none;
+}
+
+.form-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234CAF50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+.file-upload {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.upload-input {
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+}
+
+.upload-label {
+    display: block;
+    padding: 12px 25px;
+    background: #f8f9fa;
+    border: 2px dashed #4CAF50;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    color: #4CAF50;
+    transition: background 0.3s;
+}
+
+.upload-label:hover {
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.btn-wide {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1em;
+    margin-top: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-error {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .group-creation-card {
+        padding: 25px 15px;
+    }
+    
+    .section-title {
+        font-size: 1.8em;
+    }
+}

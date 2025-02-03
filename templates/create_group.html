@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Создать новую группу{% endblock %}
+
+{% block content %}
+<section class="create-group-section">
+    <div class="container">
+        <div class="group-creation-card">
+            <h2 class="section-title">Создать новую группу</h2>
+            <form class="group-form" method="POST" enctype="multipart/form-data">
+                <!-- Вывод ошибок формы -->
+                {% if error %}
+                <div class="form-error alert btn-danger">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="group-name" class="form-label">
+                        <i class="fas fa-users"></i> Название группы
+                    </label>
+                    <input type="text" 
+                           id="group-name" 
+                           name="group_name" 
+                           class="form-input"
+                           placeholder="Введите название группы"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="group-description" class="form-label">
+                        <i class="fas fa-align-left"></i> Описание
+                    </label>
+                    <textarea id="group-description" 
+                              name="description" 
+                              class="form-input" 
+                              rows="4"
+                              placeholder="Добавьте описание группы"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="group-access" class="form-label">
+                            <i class="fas fa-lock"></i> Уровень доступа
+                        </label>
+                        <select id="group-access" 
+                                name="access_level" 
+                                class="form-select">
+                            <option value="public">Публичная</option>
+                            <option value="private">Приватная</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-image"></i> Аватар группы
+                        </label>
+                        <div class="file-upload">
+                            <input type="file" 
+                                   id="group-avatar" 
+                                   name="avatar" 
+                                   accept="image/*"
+                                   class="upload-input">
+                            <label for="group-avatar" class="upload-label">
+                                Выберите файл
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-custom btn-wide">
+                    <i class="fas fa-plus-circle"></i> Создать группу
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
