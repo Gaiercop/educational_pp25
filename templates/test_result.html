@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Результаты теста{% endblock %}
+
+{% block content %}
+    <section class="test-result">
+        <div class="container">
+            <h2>Результаты теста: {{ test.name }}</h2>
+
+            <div class="result-summary">
+                <p>Вы правильно ответили на <strong>{{ correct_answers }}</strong> из <strong>{{ total_questions }}</strong> вопросов.</p>
+                <p>Ваш результат: <strong>{{ (correct_answers / total_questions) * 100 }}%</strong></p>
+            </div>
+
+            {% if correct_answers == total_questions %}
+            <div class="result-congratulations">
+                <p>Отличная работа! Вы прошли тест без ошибок!</p>
+            </div>
+            {% elif correct_answers >= total_questions / 2 %}
+            <div class="result-congratulations">
+                <p>Хороший результат, но есть куда расти!</p>
+            </div>
+            {% else %}
+            <div class="result-congratulations">
+                <p>Не расстраивайтесь, попробуйте ещё раз!</p>
+            </div>
+            {% endif %}
+
+            <div class="buttons">
+                <a href="/course/{{ course_id }}" class="btn-primary">Вернуться к курсу</a>
+                <a href="/course/{{ course_id }}/test/{{ test_id }}" class="btn-secondary">Пройти тест ещё раз</a>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .test-result {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .result-summary {
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        .result-summary strong {
+            color: #007bff;
+        }
+        .result-congratulations {
+            margin: 20px 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .btn-primary, .btn-secondary {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+{% endblock %}

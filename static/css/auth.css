@@ -1,0 +1,112 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+}
+
+.w-auto {
+    width: auto;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.course-title {
+    font-size: 2em;
+    margin: 20px 0;
+    text-align: center;
+    color: #333;
+}
+
+.auth-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+    font-size: 1em;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.custom-input {
+    background-color: #fff;
+    border: 2px solid #d1d8e0;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1em;
+    color: #333;
+    width: 100%; /* Поля ввода растягиваются на всю доступную ширину */
+    box-sizing: border-box;
+    margin-bottom: 15px; /* Отступ между полями */
+    transition: border-color 0.3s ease;
+}
+
+.custom-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 8px rgba(139, 195, 74, 0.6);
+}
+
+.btn-custom {
+    background-color: #4CAF50;;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Кнопка растягивается на всю ширину */
+}
+
+.btn-custom:hover {
+    background-color: #66bb6a;
+}
+
+.btn-custom:focus {
+    outline: none;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Дополнительные стили для выравнивания */
+.card {
+    max-width: 500px; /* Максимальная ширина карточки */
+    margin: 0 auto; /* Центрирование карточки */
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}

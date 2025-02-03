@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Готовьтесь к ЕГЭ по русскому с нами</h1>
+        <p>Получите доступ к лучшим материалам и инструментам для успешной сдачи экзамена.</p>
+        <a href="{{url_for('catalogs', sid=sid)}}" class="btn-primary">Начать подготовку</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <div class="feature">
+            <h3>Опытные преподаватели</h3>
+            <p>Учитесь у лучших репетиторов и экспертов ЕГЭ.</p>
+        </div>
+        <div class="feature">
+            <h3>Удобное обучение</h3>
+            <p>Занимайтесь в любое время и в любом месте в своем темпе.</p>
+        </div>
+        <div class="feature">
+            <h3>Тестирование и прогресс</h3>
+            <p>Проверяйте свои знания и отслеживайте свой прогресс.</p>
+        </div>
+    </div>
+</section>
+
+
+<section class="popular-courses">
+    <div class="container">
+        <h2>Популярные курсы</h2>
+        <div class="course-list">
+            <div class="course-item">
+                <h3>1 задание ЕГЭ</h3>
+                <p>Научитесь решать первое задание ЕГЭ по русскому</p>
+                <a href="course/0" class="btn-secondary">Открыть</a>
+            </div>
+            <div class="course-item">
+                <h3>2 задание ЕГЭ</h3>
+                <p>Научитесь решать второе задание ЕГЭ по русскому</p>
+                <a href="course/1" class="btn-secondary">Открыть</a>
+            </div>
+            <div class="course-item">
+                <h3>3 задание ЕГЭ</h3>
+                <p>Научитесь решать третье задание ЕГЭ по русскому</p>
+                <a href="course/2" class="btn-secondary">Открыть</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Правило Н-НН в глаголах{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <div class="container">
+        <div class="theory-title">Правило Н-НН в глаголах</div>
+
+        <div class="theory-description">
+            <p>В русском языке правописание Н и НН в глаголах зависит от множества факторов.</p>
+        </div>
+
+        {% for module in theory.modules %}
+        <div class="section">
+            <div class="section-title">{{ module.name }}</div>
+
+            {% for lesson in module.lessons %}
+            <div class="lesson">
+                <div class="lesson-title">{{ lesson.name }}</div>
+                <div class="lesson-content">
+                    {{ lesson.description }}
+                </div>
+            </div>
+            {% endfor %}
+             {% for test in module.tests %}
+            <a href="/test/{{ loop.index }}" style="text-decoration: none">
+                <div class="lesson">
+                    <div class="lesson-title">{{ test.name }}</div>
+                    <div class="lesson-content">{{ test.description }}</div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

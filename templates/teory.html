@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ teory.name }}{% endblock %}
+
+{% block content %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Теория Относительности</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .course-title {
+        font-size: 2em;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .course-description {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .section {
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .lesson {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+    }
+
+    .lesson-title {
+        font-size: 1.2em;
+        color: #555;
+    }
+
+    .lesson-content {
+        margin-top: 5px;
+        color: #666;
+        /* ADD THESE PROPERTIES */
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: pre-line;
+
+    }
+
+
+    .main-footer {
+        background: #333;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+    }
+
+    .main-footer nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .main-footer nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 0.9em;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <main>
+            <div class="course-description">
+                <h1 class="course-title"><{{teory.name}}></h1>
+                <div class="section">
+                    <div class="lesson-content">
+                       <h2>{{teory.description}}</h2>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+{% endblock %}
