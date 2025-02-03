@@ -8,14 +8,28 @@
     <title>База заданий</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
         .task-container {
             background: #fff;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 20px;
-            margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
         }
 
         .task-container:hover {
@@ -23,49 +37,9 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .task-container h3 {
-            margin-bottom: 1rem;
-            margin-top: 0;
-            font-size: 1.5em;
-            color: #333;
-        }
-
-        .task-container p {
-            margin-bottom: 0.75rem;
-            margin-top: 0;
-            color: #555;
-        }
-
-        .task-container ul {
-            padding-left: 20px;
-            margin-bottom: 0.75rem;
-            margin-top: 0;
-            color: #555;
-        }
-
-        .task-container ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        .task-container .tags {
-            margin-top: 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .task-container .tags span {
-            background: #4CAF50;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-
-        .task-container .difficulty {
-            margin-top: 1rem;
-            font-weight: bold;
-            color: #4CAF50;
+        .task-meta {
+            margin-top: auto;
+            padding-top: 15px;
         }
 
         .filter-section {
@@ -76,13 +50,6 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .filter-section label {
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: block;
-            color: #333;
-        }
-
         .filter-section .tags {
             display: flex;
             flex-wrap: wrap;
@@ -90,7 +57,7 @@
             margin-bottom: 20px;
         }
 
-        .filter-section .tags label {
+        .filter-section label {
             background: #e0e0e0;
             padding: 5px 10px;
             border-radius: 4px;
@@ -98,32 +65,50 @@
             transition: background-color 0.3s;
         }
 
-        .filter-section .tags label:hover {
+        .filter-section label:hover {
             background: #4CAF50;
             color: #fff;
         }
 
-        .filter-section button {
+        .submit-btn {
             background: #4CAF50;
-            color: #fff;
-            border: none;
+            color: white;
             padding: 10px 20px;
+            border: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            margin-top: 15px;
+            transition: background 0.3s;
+            width: 100%;
         }
 
-        .filter-section button:hover {
+        .submit-btn:hover {
             background: #45a049;
         }
 
-        @media (max-width: 768px) {
-            .task-container {
-                padding: 15px;
-            }
+        .answers {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
-            .task-container h3 {
-                font-size: 1.3em;
+        .answers label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .answers label:hover {
+            background: #f5f5f5;
+        }
+
+        @media (max-width: 768px) {
+            .tasks-grid {
+                grid-template-columns: 1fr;
             }
 
             .filter-section .tags {
@@ -148,30 +133,45 @@
                     </label>
                     {% endfor %}
                 </div>
-                <button type="submit">Применить фильтр</button>
+                <button type="submit" class="submit-btn">Применить фильтр</button>
             </form>
         </div>
 
-        {% for task in tasks %}
-        <div class="task-container">
-            <h3>Задание {{ task.id }}</h3>
-            <p>{{ task.text }}</p>
-            {% if task.options %}
-            <p><strong>Варианты:</strong></p>
-            <ul>
-                {% for option in task.options %}
-                <li>{{ option }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            <div class="tags">
-                {% for tag in task.tags %}
-                {{ tag }};
-                {% endfor %}
+        <div class="tasks-grid">
+            {% for task in tasks %}
+            <div class="task-container">
+                <h3>Задание {{ task.id }}</h3>
+                <p>{{ task.text }}</p>
+
+                {% if task.options %}
+                <form method="POST" action="{{ url_for('submit_task') }}">
+                    <input type="hidden" name="task_id" value="{{ task.id }}">
+                    <input type="hidden" name="sid" value="{{ sid }}">
+
+                    <div class="answers">
+                        {% for option in task.options %}
+                        <label>
+                            <input type="radio" name="answer" value="{{ option }}" required>
+                            {{ option }}
+                        </label>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="submit-btn">Проверить ответ</button>
+                </form>
+                {% endif %}
+
+                <div class="task-meta">
+                    <div class="tags">
+                        {% for tag in task.tags %}
+                        <span class="tag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="difficulty">Сложность: {{ task.difficulty }}</div>
+                </div>
             </div>
-            <p class="difficulty"><strong>Сложность:</strong> {{ task.difficulty }}</p>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </main>
 </body>
