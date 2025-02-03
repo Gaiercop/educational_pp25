@@ -24,6 +24,39 @@ def inject_vars():
         request=request
     )
 
+@app.template_filter('datetime_format')
+def datetime_format(value):
+    if value is None:
+        return ""
+    return datetime.fromisoformat(value).strftime('%d.%m.%Y %H:%M')
+
+def get_user_groups(username: str):
+    groups_file = 'groups/groups.json'
+    user_groups = []
+    
+    try:
+        with open(groups_file, 'r', encoding='utf-8') as f:
+            all_groups = json.load(f)
+            
+        for group in all_groups:
+            if username in group.get('members', []) or username == group.get('creator_id'):
+                members = group.get('members', [])
+
+                group_data = {
+                    'id': group.get('id'),
+                    'name': group.get('name'),
+                    'access_level': group.get('access_level', 'private'),
+                    'members': group.get('members', []),
+                    'created_at': group.get('created_at'),
+                    'members_count': len(members),
+                }
+                user_groups.append(group_data)
+                
+    except Exception as e:
+        print(f"Error loading groups: {str(e)}")
+    
+    return user_groups
+
 def get_current_user(sid: str):
     return auth.get_user_by_session(sid) if sid else None
 
@@ -39,6 +72,64 @@ def logout():
         auth.terminate_session(sid)
     return redirect(url_for('index'))
 # ================== Группы ==================
+
+def get_group_by_id(group_id):
+    groups_file = 'groups/groups.json'
+    if not os.path.exists(groups_file):
+        return None
+        
+    with open(groups_file, 'r', encoding='utf-8') as f:
+        groups = json.load(f)
+        return next((g for g in groups if g['id'] == group_id), None)
+
+def update_group(updated_group):
+    groups_file = 'groups/groups.json'
+    with open(groups_file, 'r+', encoding='utf-8') as f:
+        groups = json.load(f)
+        index = next(i for i, g in enumerate(groups) if g['id'] == updated_group['id'])
+        groups[index] = updated_group
+        f.seek(0)
+        json.dump(groups, f, ensure_ascii=False, indent=4)
+        f.truncate()
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+def group_page(group_id):
+    sid = request.args.get('sid')
+    user = auth.get_user_by_session(sid)
+    
+    group = get_group_by_id(group_id)
+    if not group:
+        abort(404)
+    
+    if not user or user.username not in group['members']:
+        return redirect(url_for('login'))
+    
+    error = None
+    if request.method == 'POST' and user.username == group['creator_id']:
+        action = request.form.get('action')
+        target_user = request.form.get('username')
+        
+        if action == 'add':
+            if auth.find_user(target_user):
+                if target_user not in group['members']:
+                    group['members'].append(target_user)
+                    update_group(group)
+                else:
+                    error = "Пользователь уже в группе"
+            else:
+                error = "Пользователь не найден"
+                
+        elif action == 'remove':
+            if target_user in group['members'] and target_user != group['creator_id']:
+                group['members'].remove(target_user)
+                update_group(group)
+    
+    return render_template('group_page.html',
+                         sid=sid,
+                         group=group,
+                         user=user,
+                         error=error)
+
 @app.route('/create_group', methods=['GET', 'POST'])
 def create_group():
     sid = request.args.get('sid')
@@ -80,7 +171,7 @@ def create_group():
             with open(groups_file, 'w', encoding='utf-8') as f:
                 json.dump(groups, f, ensure_ascii=False, indent=4)
 
-            return redirect(url_for('group_page', group_id=group_data['id'], sid=sid))
+            return redirect(url_for('profile', sid=sid))
 
         except Exception as e:
             print(f"Error creating group: {str(e)}")
@@ -243,16 +334,16 @@ def register():
 @app.route('/profile')
 def profile():
     sid = request.args.get('sid')
-    user = get_current_user(sid)
+    user = auth.get_user_by_session(sid)
     
     if not user:
         return redirect(url_for('login'))
     
-    access_map = {1: "Ученик", 2: "Учитель"}
-    return render_template("profile.html", 
-                         sid=sid, 
-                         username=user.username, 
-                         access=access_map.get(user.access, "Гость"))
+    return render_template("profile.html",
+                        sid=sid,
+                        username=user.username,
+                        access="Учитель" if int(user.access) == 2 else "Ученик",
+                        groups=get_user_groups(user.username))
 
 @app.route('/course/<int:course_id>')
 def course(course_id):

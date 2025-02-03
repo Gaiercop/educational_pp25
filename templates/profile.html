@@ -1,29 +1,148 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <!-- Profile Section -->
-            <div class="profile-section card shadow-lg p-4 mb-4">
-                <h2 class="text-center text-success mb-4">Добро пожаловать, {{ username }}!</h2>
-                
-                <!-- Profile Information -->
-                <div class="profile-info mb-3">
-                    <label for="username" class="form-label">Логин:</label>
-                    <p id="username">{{ username }}</p>
+<div class="container profile-container py-5">
+    <div class="row g-4">
+        <!-- Боковая панель профиля -->
+        <div class="col-lg-3">
+            <div class="card profile-card border-0 shadow-lg">
+                <div class="card-body text-center px-4 py-5">
+                    <div class="avatar-wrapper mb-4">
+                        <div class="avatar-icon bg-soft-success text-success">
+                            <i class="fas fa-user-graduate fa-3x"></i>
+                        </div>
+                    </div>
+                    <h3 class="mb-3 fw-bold text-success">{{ username }}</h3>
+                    <div class="badge bg-soft-success text-success fs-6 rounded-pill px-3 py-2">
+                        <i class="fas fa-shield-alt me-2"></i>{{ access }}
+                    </div>
+                    
+                    {% if access == "Учитель" %}
+                    <div class="mt-5">
+                        <a href="{{ url_for('create_group', sid=request.args.get('sid')) }}" 
+                           class="btn btn-success btn-lg w-100 rounded-pill d-flex align-items-center justify-content-center">
+                            <i class="fas fa-plus-circle me-3 fs-5"></i>
+                            <span>Новая группа</span>
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="profile-info mb-3">
-                    <label for="access-level" class="form-label">Уровень доступа:</label>
-                    <p id="access-level" class="text-muted">{{ access }}</p>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-lg-9">
+            <!-- Статистика -->
+            <div class="card stats-card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-4 text-success fw-bold">
+                        <i class="fas fa-chart-pie me-2"></i>Статистика активности
+                    </h4>
+                    <div class="row g-3 stats-grid">
+                        <div class="col-md-4">
+                            <div class="stat-item bg-soft-success p-4 rounded-4 text-center">
+                                <div class="stat-value text-success display-6 fw-bold">{{ groups|length }}</div>
+                                <div class="stat-label text-muted mt-2">Мои группы</div>
+                                <div class="stat-icon text-success mt-3">
+                                    <i class="fas fa-users fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item bg-soft-success p-4 rounded-4 text-center">
+                                <div class="stat-value text-success display-6 fw-bold">{{ students_count }}</div>
+                                <div class="stat-label text-muted mt-2">Учеников</div>
+                                <div class="stat-icon text-success mt-3">
+                                    <i class="fas fa-user-friends fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item bg-soft-success p-4 rounded-4 text-center">
+                                <div class="stat-value text-success display-6 fw-bold">0</div>
+                                <div class="stat-label text-muted mt-2">Курсов</div>
+                                <div class="stat-icon text-success mt-3">
+                                    <i class="fas fa-book-open fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Additional Section (if needed) -->
-            <div class="additional-info card shadow-lg p-4">
-                <h3 class="text-center text-success mb-4">Мои курсы</h3>
-                <div class="text-center">
-                    <button class="btn btn-secondary w-75 mb-3">Перейти к курсам</button>
+            <!-- Список групп -->
+            <div class="card groups-card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="card-title text-success fw-bold m-0">
+                            <i class="fas fa-layer-group me-3"></i>Мои группы
+                        </h4>
+                        <div class="dropdown">
+                            <button class="btn btn-link text-success" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v fa-lg"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-sync me-2"></i>Обновить</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {% if groups %}
+                    <div class="group-list">
+                        {% for group in groups %}
+                        <a href="{{ url_for('group_page', group_id=group.id, sid=request.args.get('sid')) }}" 
+                           class="group-item card border-0 shadow-sm mb-3 text-decoration-none hover-effect">
+                            <div class="card-body p-4">
+                                <div class="row align-items-center g-3">
+                                    <div class="col-auto">
+                                        <div class="group-icon bg-soft-success text-success rounded-3 p-3">
+                                            <i class="fas fa-users fa-2x"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <h5 class="group-title text-success mb-1 fw-bold">{{ group.name }}</h5>
+                                        <div class="group-meta text-muted small">
+                                            <span class="me-3">
+                                                <i class="fas fa-user-clock me-1"></i>
+                                                {{ group.created_at|datetime_format }}
+                                            </span>
+                                            <span class="me-3">
+                                                <i class="fas fa-users me-1"></i>
+                                                {{ group.members_count }} участников
+                                            </span>
+                                            <span class="badge bg-{{ 'success' if group.access_level == 'public' else 'danger' }} rounded-pill">
+                                                {{ 'Публичная' if group.access_level == 'public' else 'Приватная' }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="group-actions">
+                                            {% if group.creator_id == username %}
+                                            <span class="badge bg-warning text-dark rounded-pill px-3 py-2">
+                                                <i class="fas fa-crown me-2"></i>Создатель
+                                            </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state text-center py-5">
+                        <div class="empty-icon mb-4">
+                            <i class="fas fa-user-friends fa-4x text-success opacity-25"></i>
+                        </div>
+                        <h5 class="text-muted mb-4">У вас пока нет ни одной группы</h5>
+                        {% if access == "Учитель" %}
+                        <a href="{{ url_for('create_group', sid=request.args.get('sid')) }}" 
+                           class="btn btn-success btn-lg px-5 rounded-pill">
+                            <i class="fas fa-plus-circle me-3"></i>Создать группу
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
