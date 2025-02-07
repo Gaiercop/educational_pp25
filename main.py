@@ -413,27 +413,16 @@ def submit_task():
     task_id = request.form.get('task_id')
     task_type = request.form.get('task_type')
     selected_answer = request.form.get('answer')
+    print(selected_answer)
     user = auth.get_user_by_session(sid)
     if (user):
         user = user.username
     else:
         user = "незарегистрированный пользователь"
-    # Получаем userid из сессии
-    userid = sid
-    # Загрузка задач и поиск текущей
-    with open("tasks.json", 'r', encoding='utf-8') as f:
-        tasks = json.load(f)
-        current_task = next((t for t in tasks if t['id'] == int(task_id)), None)
-
-    if not current_task:
-        return "Задача не найдена", 404
-
-    # Определяем тип задачи по первому тегу
-
-    # Нормализуем ответы для сравнения
-    correct_answer = current_task['answer'].strip().lower()
+    task = get_task_byid(task_id)
+    correct_answer = task['answer'].strip().lower()
     user_answer = selected_answer.strip().lower()
-
+    print("ok")
     is_correct = user_answer == correct_answer
     # Обновление статистики в БД
     try:
@@ -448,28 +437,67 @@ def submit_task():
 
 @app.route('/tasks')
 def tasks():
-    sid = request.args.get('sid')
 
+    sid = request.args.get('sid')
+    tasks_id = get_all_taskid()
     if not auth.check_session(sid) if sid else False:
         return redirect(url_for('login'))
+    all_filters = set()
+    tasks_data = [[] for i in range (len(tasks_id))]
+    for i in range(len(tasks_id)):
+        tasks_data[i] = get_task_byid(tasks_id[i])
+        tasks_data[i]['options'] = tasks_data[i]['options'].split(';')
 
+        tasks_data[i]['tags'] = tasks_data[i]['tags'].split(';')
+        for tag in tasks_data[i]['tags']:
+           all_filters.add(tag)
     selected_tags = request.args.getlist('tags')
-
-    with open("tasks.json", 'r', encoding='utf-8') as f:
-        tsks = json.load(f)
-
-    filtered_tasks = tsks
-    if selected_tags:
-        filtered_tasks = [task for task in tsks
-                          if any(tag in task['tags'] for tag in selected_tags)]
-
-    all_tags = {tag for task in tsks for tag in task['tags']}
-
+    all_filters = ["орфоэпия",
+                   "паронимы", "лексические_нормы", "морфологические_нормы", "синтаксические_нормы",
+                   "правописание_корней", "правописание_приставок", "правописание_суффиксов", "правописание_глаголов",
+                   "правописание_причастий", "правописание_не", "слитное_раздельное_написание", "н_нн",
+                   "знаки_препинания_простое_предложение", "знаки_препинания_обособленные_конструкции",
+                   "знаки_препинания_вводные_слова", "знаки_препинания_сложное_предложение", "средства_выразительности",
+                   "сочинение_егэ", "аргументы_к_сочинению"]
+    print(selected_tags)
+    res = []
+    for task in tasks_data:
+        cur = task['tags']
+        fl = 0
+        for tag in selected_tags:
+            if(tag not in cur):
+                fl = 1
+        if(fl == 0):
+            res.append(task)
+    tasks_data = res[::]
     return render_template('tasks.html',
-                           tasks=filtered_tasks,
-                           all_tags=all_tags,
-                           sid=sid)
+                         all_tags=all_filters,
+                         sid=sid, tasks_data = tasks_data)
 
+@app.route('/add_task', methods=['GET', 'POST'])
+def add_task():
+    if request.method == 'POST':
+        text = request.form['text']
+        options = request.form['options']
+        answer = request.form['answer']
+        tags = request.form.getlist('tags')
+        t = ""
+        for i in range(len(tags)-1):
+            t += tags[i]+';'
+        tags = t
+        difficulty = request.form['difficulty']
+        type = request.form['type']
+        add_task_byid(text,options,answer, tags,difficulty,type)
+        return redirect(url_for('tasks'))  # Замените 'tasks_page' на имя вашей функции представления для страницы с заданиями
+    else:
+        sid = request.args.get('sid')
+        tasks_id = get_all_taskid()
+        if not auth.check_session(sid) if sid else False:
+            return redirect(url_for('login'))
+
+        all_filters= [  "орфоэпия",
+    "паронимы", "лексические_нормы","морфологические_нормы", "синтаксические_нормы", "правописание_корней", "правописание_приставок",  "правописание_суффиксов", "правописание_глаголов", "правописание_причастий", "правописание_не", "слитное_раздельное_написание",   "н_нн","знаки_препинания_простое_предложение",  "знаки_препинания_обособленные_конструкции",  "знаки_препинания_вводные_слова",  "знаки_препинания_сложное_предложение", "средства_выразительности",  "сочинение_егэ",  "аргументы_к_сочинению"]
+    return render_template('add_task.html', all_tags=all_filters)
 
 # ================== Тесты ==================
 @app.route('/tests')

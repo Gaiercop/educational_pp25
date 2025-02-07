@@ -64,7 +64,7 @@
         }
 
         .submit-btn {
-            background: #4CAF50;
+            background: #808080;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -75,8 +75,12 @@
             width: 100%;
         }
 
-        .submit-btn:hover {
-            background: #45a049;
+        .submit-btn.correct {
+            background: #4CAF50; /* Зеленый цвет для правильного ответа */
+        }
+
+        .submit-btn.incorrect {
+            background: #f44336; /* Красный цвет для неправильного ответа */
         }
 
         .answers {
@@ -114,7 +118,7 @@
             background: #4CAF50 !important;
             color: white !important;
         }
-        
+
         .reset-btn {
             color: #4CAF50;
             text-decoration: none;
@@ -122,9 +126,26 @@
             padding: 10px 15px;
             border-radius: 4px;
         }
-        
+
         .reset-btn:hover {
             background-color: rgba(76,175,80,0.1);
+        }
+
+        .add-task-btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s;
+            display: inline-block; /* Чтобы можно было задать margin */
+            text-decoration: none; /* Убирает подчеркивание у ссылки */
+        }
+
+        .add-task-btn:hover {
+            background: #0056b3;
         }
     </style>
 </head>
@@ -133,6 +154,7 @@
 <main>
     <div class="container">
         <h1>База заданий</h1>
+        <a href="{{ url_for('add_task') }}" class="add-task-btn">Добавить задание</a>
 
         <!-- Фильтры с сохранением sid -->
         <div class="filter-section">
@@ -142,8 +164,8 @@
                 <div class="tags">
                     {% for tag in all_tags %}
                     <label>
-                        <input type="checkbox" 
-                               name="tags" 
+                        <input type="checkbox"
+                               name="tags"
                                value="{{ tag }}"
                                {% if tag in request.args.getlist('tags') %}checked{% endif %}>
                         {{ tag }}
@@ -157,19 +179,20 @@
 
         <!-- Список заданий -->
         <div class="tasks-grid">
-            {% for task in tasks %}
+            {% for task in tasks_data %}
             <div class="task-container">
-                <h3>Задание {{ task.id }}</h3>
-                <p>{{ task.text }}</p>
+                <h3>Задание {{ task['id'] }}</h3>
+                <h4>{{ task['type'] }}</h4>
+                <p>{{ task['text'] }}</p>
 
-                {% if task.options %}
-                <form method="POST" action="{{ url_for('submit_task') }}">
+                {% if task['options'] %}
+                <form method="POST" action="{{ url_for('submit_task') }}" id="form-{{ task['id'] }}">
                     <input type="hidden" name="sid" value="{{ sid }}">
                     <input type="hidden" name="task_id" value="{{ task.id }}">
                     <input type="hidden" name="task_type" value="{{ task.type }}">
 
                     <div class="answers">
-                        {% for option in task.options %}
+                        {% for option in task['options'] %}
                         <label>
                             <input type="radio" name="answer" value="{{ option }}" required>
                             {{ option }}
@@ -177,19 +200,43 @@
                         {% endfor %}
                     </div>
 
-                    <button type="submit" class="submit-btn">Проверить ответ</button>
+                    <button type="submit" class="submit-btn" id="submit-btn-{{ task['id'] }}" >Проверить ответ</button>
                 </form>
                 {% endif %}
 
                 <div class="task-meta">
                     <div class="tags">
-                        {% for tag in task.tags %}
+                    {% for tag in task['tags'] %}
                         <span class="tag">{{ tag }}</span>
-                        {% endfor %}
+                     {% endfor %}
                     </div>
-                    <div class="difficulty">Сложность: {{ task.difficulty }}</div>
+                    <div class="difficulty">Сложность: {{ task['difficulty'] }}</div>
                 </div>
             </div>
+
+            <script>
+                document.getElementById('form-{{ task['id'] }}').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Предотвращаем отправку формы
+
+                    const selectedAnswer = this.querySelector('input[name="answer"]:checked').value;
+                    const correctAnswer = "{{ task['answer'] }}";
+                    const submitButton = document.getElementById('submit-btn-{{ task['id'] }}');
+
+                    if (selectedAnswer === correctAnswer) {
+                        submitButton.classList.add('correct');
+                        submitButton.classList.remove('incorrect');
+                    } else {
+                        submitButton.classList.add('incorrect');
+                        submitButton.classList.remove('correct');
+                    }
+
+                    // Опционально: отправить форму через AJAX, если нужно сохранить ответ на сервере
+                    // fetch(this.action, {
+                    //     method: 'POST',
+                    //     body: new FormData(this)
+                    // });
+                });
+            </script>
             {% else %}
             <div class="task-container" style="grid-column: 1 / -1; text-align: center;">
                 <p>Заданий по выбранным фильтрам не найдено</p>

@@ -1,5 +1,4 @@
 import sqlite3
-
 conn = sqlite3.connect('students_tasks.db')
 cursor = conn.cursor()
 
@@ -89,3 +88,85 @@ def reset_database():
     ''')
     conn.commit()
     print("База данных успешно сброшена!")
+def recreate_tasks_table():
+    # Подключение к базе данных (файл students_tasks.db будет создан, если его нет)
+    conn = sqlite3.connect('students_tasks.db')
+    cursor = conn.cursor()
+    cursor.execute('DROP TABLE IF EXISTS tasks')
+    # SQL-запрос для создания таблицы
+    create_table_query = """
+    CREATE TABLE IF NOT EXISTS tasks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        text TEXT NOT NULL,
+        options TEXT,
+        answer TEXT NOT NULL,
+        tags TEXT,
+        difficulty INTEGER,
+        type TEXT
+    );
+    """
+
+    try:
+        cursor.execute(create_table_query)
+        conn.commit()
+        print("Таблица 'tasks' успешно создана или уже существует.")
+    except sqlite3.Error as e:
+        print(f"Ошибка при создании таблицы: {e}")
+    finally:
+        conn.close()
+def get_task_byid(userid):
+    conn = sqlite3.connect('students_tasks.db')
+    cursor = conn.cursor()
+
+    # Получаем статистику по типам задач
+    cursor.execute('''
+        SELECT 
+            id,
+            text, options,answer,tags,difficulty, type
+        FROM tasks
+        WHERE id = ?
+    ''', (userid,))
+
+    stats = cursor.fetchall()
+    conn.close()
+    tasks_stats = defaultdict(dict)
+    tasks_field = ['id','text','options','answer','tags','difficulty','type']
+    for i in range(len(tasks_field)):
+        tasks_stats[tasks_field[i]] = stats[0][i]
+
+    return tasks_stats
+def get_all_taskid():
+    conn = sqlite3.connect('students_tasks.db')
+    cursor = conn.cursor()
+
+    # Получаем статистику по типам задач
+    cursor.execute('''
+           SELECT id
+           FROM tasks
+       ''')
+    data = cursor.fetchall()
+    ab = []
+    for i in range(len(data)):
+        ab.append(data[i][0])
+    conn.close()
+    return ab
+def add_task_byid(text, options, answer, tags, difficulty, type):
+    # Подключаемся к базе данных (если база данных не существует, она будет создана)
+    conn = sqlite3.connect('students_tasks.db')
+    cursor = conn.cursor()
+
+    # SQL-запрос для вставки данных в таблицу tasks
+    query = '''
+    INSERT INTO tasks (text, options, answer, tags, difficulty, type)
+    VALUES (?, ?, ?, ?, ?, ?)
+    '''
+
+    # Выполняем запрос с переданными параметрами
+    cursor.execute(query, (text, options, answer, tags, difficulty, type))
+
+    # Сохраняем изменения и закрываем соединение
+    conn.commit()
+    conn.close()
+
+if __name__ == "__main__":
+    reset_database()
