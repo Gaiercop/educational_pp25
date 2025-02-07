@@ -20,6 +20,27 @@
                 <p><strong>Сложность:</strong> {{ task.difficulty }}</p>
             </div>
             {% endfor %}
+            <legend class="form-label">Система проверки</legend>
+            <div class="form-check">
+                <input class="form-check-full" type="radio" id="check-full" name="check"
+                    value="Полная" required>
+                <label for="check-full" class="check-full-label">Полная</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-partial" type="radio" id="check-partial" name="check"
+                    value="Частичная" required>
+                <label for="check-partial" class="check-partial-label">Частичная</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-points" type="radio" id="check-points" name="check"
+                    value="Только баллы" required>
+                <label for="check-points" class="check-points-label">Только баллы</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-empty" type="radio" id="check-empty" name="check"
+                    value="Отсутствие обратной связи" required>
+                <label for="check-empty" class="check-empty-label">Отсутствие обратной связи</label>
+            </div>
         </div>
         <button type="submit" class="submit-btn">Создать вариант</button>
     </form>
