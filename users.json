@@ -1,12 +1,9 @@
 [
   {
-    "username": "aboba",
-    "pwd": "aboba",
-    "access": 1
-  },
-  {
-    "username": "Kmes",
-    "pwd": "12345",
-    "access": 2
+    "username": "login",
+    "pwd": "pass",
+    "access": 2,
+    "birthday": "2022-04-12",
+    "email": "as@ya.ru"
   }
 ]
