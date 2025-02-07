@@ -5,5 +5,12 @@
     "access": 2,
     "birthday": "2022-04-12",
     "email": "as@ya.ru"
+  },
+  {
+    "username": "er",
+    "pwd": "r",
+    "access": 2,
+    "birthday": "0554-04-23",
+    "email": "sd@d.ru"
   }
 ]

@@ -519,7 +519,6 @@ def login():
 @app.route('/register', methods=["POST", "GET"])
 def register():
     sid = request.args.get('sid')
-
     if request.method == 'POST':
         try:
             user = User(
