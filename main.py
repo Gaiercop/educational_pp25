@@ -75,6 +75,7 @@ def handle_authentication(sid: str):
         return redirect(url_for('login') + f'?sid={sid}')
     return None
 
+
 # Создание варианта теста
 @app.route('/create_variant', methods=['GET', 'POST'])
 def create_variant():
@@ -118,12 +119,16 @@ def create_variant():
         selected_ids = list(map(int, request.form.getlist('selected_tasks')))
         check_system = request.form.get('check')
         check_id = int()
-        
-        if check_system == "Полная": check_id = 0
-        elif check_system == "Частичная": check_id = 1
-        elif check_system == "Только баллы": check_id = 2
-        else: check_id = 3
-        
+
+        if check_system == "Полная":
+            check_id = 0
+        elif check_system == "Частичная":
+            check_id = 1
+        elif check_system == "Только баллы":
+            check_id = 2
+        else:
+            check_id = 3
+
         with open("tasks.json", 'r', encoding='utf-8') as f:
             all_tasks = json.load(f)
 
@@ -146,13 +151,14 @@ def create_variant():
         os.makedirs(VARIANTS_DIR, exist_ok=True)
         with open(os.path.join(VARIANTS_DIR, f"{variant_id}.json"), 'w', encoding='utf-8') as f:
             json.dump(variant_data, f, ensure_ascii=False, indent=4)
-        
+
         return redirect(url_for('profile', variant_id=variant_id, sid=sid))
-    
+
     with open("tasks.json", 'r', encoding='utf-8') as f:
         tasks = json.load(f)
 
-    return render_template('create_variant.html', tasks=tasks_data, sid = sid)
+    return render_template('create_variant.html', tasks=tasks_data, sid=sid)
+
 
 # Решение варианта
 @app.route('/solve_variant/<variant_id>', methods=['GET', 'POST'])
@@ -190,10 +196,10 @@ def solve_variant(variant_id):
             })
 
         score = f"{correct}/{len(variant_data['tasks'])}"
-        return render_template('variant_results.html', score=score, results=results, check_id = variant_data['check'], sid=sid)
+        return render_template('variant_results.html', score=score, results=results, check_id=variant_data['check'],
+                               sid=sid)
 
     return render_template('solve_variant.html', variant=variant_data, sid=sid)
-
 
 
 @app.route('/logout')
@@ -266,6 +272,7 @@ def group_page(group_id):
                            user=user,
                            error=error)
 
+
 @app.route('/join_group', methods=['GET', 'POST'])
 def join_group_by_token():
     sid = request.args.get('sid')
@@ -326,7 +333,8 @@ def create_group():
                 "creator_id": user.username,
                 "members": [user.username],
                 "created_at": datetime.now().isoformat(),
-                "token": sha256((str(datetime.now().isoformat()) + str(int(time.time() * 1000)) + str(user.username)).encode()).hexdigest()
+                "token": sha256((str(datetime.now().isoformat()) + str(int(time.time() * 1000)) + str(
+                    user.username)).encode()).hexdigest()
             }
 
             if not group_data['name']:
@@ -462,7 +470,7 @@ def submit_task():
     task = get_task_byid(task_id)
     correct_answer = task['answer'].strip().lower()
     user_answer = selected_answer.strip().lower()
-    print("ok")
+
     is_correct = user_answer == correct_answer
     # Обновление статистики в БД
     try:
@@ -482,14 +490,14 @@ def tasks():
     if not auth.check_session(sid) if sid else False:
         return redirect(url_for('login'))
     all_filters = set()
-    tasks_data = [[] for i in range (len(tasks_id))]
+    tasks_data = [[] for i in range(len(tasks_id))]
     for i in range(len(tasks_id)):
         tasks_data[i] = get_task_byid(tasks_id[i])
         tasks_data[i]['options'] = tasks_data[i]['options'].split(';')
 
         tasks_data[i]['tags'] = tasks_data[i]['tags'].split(';')
         for tag in tasks_data[i]['tags']:
-           all_filters.add(tag)
+            all_filters.add(tag)
     selected_tags = request.args.getlist('tags')
     all_filters = ["орфоэпия",
                    "паронимы", "лексические_нормы", "морфологические_нормы", "синтаксические_нормы",
@@ -504,14 +512,15 @@ def tasks():
         cur = task['tags']
         fl = 0
         for tag in selected_tags:
-            if(tag not in cur):
+            if (tag not in cur):
                 fl = 1
-        if(fl == 0):
+        if (fl == 0):
             res.append(task)
     tasks_data = res[::]
     return render_template('tasks.html',
-                         all_tags=all_filters,
-                         sid=sid, tasks_data = tasks_data)
+                           all_tags=all_filters,
+                           sid=sid, tasks_data=tasks_data)
+
 
 @app.route('/add_task', methods=['GET', 'POST'])
 def add_task():
@@ -521,22 +530,30 @@ def add_task():
         answer = request.form['answer']
         tags = request.form.getlist('tags')
         t = ""
-        for i in range(len(tags)-1):
-            t += tags[i]+';'
+        for i in range(len(tags) - 1):
+            t += tags[i] + ';'
         tags = t
         difficulty = request.form['difficulty']
         type = request.form['type']
-        add_task_byid(text,options,answer, tags,difficulty,type)
-        return redirect(url_for('tasks'))  # Замените 'tasks_page' на имя вашей функции представления для страницы с заданиями
+        add_task_byid(text, options, answer, tags, difficulty, type)
+        return redirect(
+            url_for('tasks'))  # Замените 'tasks_page' на имя вашей функции представления для страницы с заданиями
     else:
         sid = request.args.get('sid')
         tasks_id = get_all_taskid()
         if not auth.check_session(sid) if sid else False:
             return redirect(url_for('login'))
 
-        all_filters= [  "орфоэпия",
-    "паронимы", "лексические_нормы","морфологические_нормы", "синтаксические_нормы", "правописание_корней", "правописание_приставок",  "правописание_суффиксов", "правописание_глаголов", "правописание_причастий", "правописание_не", "слитное_раздельное_написание",   "н_нн","знаки_препинания_простое_предложение",  "знаки_препинания_обособленные_конструкции",  "знаки_препинания_вводные_слова",  "знаки_препинания_сложное_предложение", "средства_выразительности",  "сочинение_егэ",  "аргументы_к_сочинению"]
+        all_filters = ["орфоэпия",
+                       "паронимы", "лексические_нормы", "морфологические_нормы", "синтаксические_нормы",
+                       "правописание_корней", "правописание_приставок", "правописание_суффиксов",
+                       "правописание_глаголов", "правописание_причастий", "правописание_не",
+                       "слитное_раздельное_написание", "н_нн", "знаки_препинания_простое_предложение",
+                       "знаки_препинания_обособленные_конструкции", "знаки_препинания_вводные_слова",
+                       "знаки_препинания_сложное_предложение", "средства_выразительности", "сочинение_егэ",
+                       "аргументы_к_сочинению"]
     return render_template('add_task.html', all_tags=all_filters)
+
 
 # ================== Тесты ==================
 @app.route('/tests')
@@ -560,6 +577,33 @@ def test(course_id, test_id):
                            course_id=course_id,
                            test_id=test_id,
                            sid=sid)
+
+
+@app.route('/course/<int:course_id>/test_result/<int:test_id>', methods=["GET", "POST"])
+def test_result(course_id, test_id):
+    correct_answers = []
+    user_answers = []
+    ok = 0
+    if (request.method == "POST"):
+        sid = request.args.get('sid')
+        test_file = os.path.join(TESTS_DIR, f"{course_id}_{test_id}.json")
+
+        if not os.path.exists(test_file):
+            abort(404, description="Test not found")
+
+        test_data = []
+        with open(test_file, 'r', encoding='utf-8') as file:
+            test_data = json.load(file)
+
+        for d in test_data['questions']:
+            correct_answers.append(d['correct'])
+        for i in range(len(correct_answers)):
+            print("question" + str(i + 1))
+            user_answers.append(request.form.get("question" + str(i + 1)))
+        for a, b in zip(correct_answers, user_answers):
+            if (a == b):
+                ok += 1
+    return render_template("test_result.html", total_questions=len(correct_answers), correct_answers=ok)
 
 
 # ================== Аутентификация ==================
@@ -586,6 +630,7 @@ def login():
 @app.route('/register', methods=["POST", "GET"])
 def register():
     sid = request.args.get('sid')
+
     if request.method == 'POST':
         try:
             user = User(
@@ -618,19 +663,19 @@ def profile():
 
     if not user:
         return redirect(url_for('login'))
-    
+    # 322
     userid = user.username
     tasks_stats = get_tasks_stats(userid)
     total_tasks = sum(stats['total'] for stats in tasks_stats.values())
     variants = []
-    
+
     for file in os.listdir(VARIANTS_DIR):
         filename = os.fsdecode(file)
-        with open(VARIANTS_DIR + '/' + filename, 'r', encoding = 'utf-8') as f:
+        with open(VARIANTS_DIR + '/' + filename, 'r', encoding='utf-8') as f:
             variant = json.load(f)
             if variant['created_by'] == userid:
                 variants.append(variant)
-    
+
     user_groups = get_user_groups(user.username)
 
     all_members = set()
@@ -651,8 +696,8 @@ def profile():
                            groups=user_groups,
                            students_count=students_count, tasks_stats=tasks_stats,
                            birthday=user.birthday, email=user.email,
-                                           variants=variants,
-        total_tasks=total_tasks)
+                           variants=variants,
+                           total_tasks=total_tasks)
 
 
 @app.route('/course/<int:course_id>')

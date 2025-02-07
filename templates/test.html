@@ -7,7 +7,7 @@
     <div class="container">
         <h2>{{ test.name }}</h2>
         
-        <form action="{{ url_for('test_result', course_id=course_id, test_id=test_id) }}" method="get" id="test-form">
+        <form action="{{ url_for('test_result', course_id=course_id, test_id=test_id) }}" method="post" id="test-form">
             {% for question in test.questions %}
             <div class="test">
                 <h3>{{ question.name }}</h3>
