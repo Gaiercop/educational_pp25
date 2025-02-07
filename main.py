@@ -6,12 +6,9 @@ import json
 from datetime import datetime
 from get_themebyid import *
 from statistics import *
-<<<<<<< HEAD
 from hashlib import *
-=======
 import uuid
 
->>>>>>> e23c4820f66b31a81eae4777d5f4846b857b3184
 app = Flask(__name__)
 auth = AuthManager()
 app.auth = auth
