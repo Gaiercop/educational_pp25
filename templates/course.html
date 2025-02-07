@@ -4,22 +4,24 @@
 
 {% block content %}
     <link rel="stylesheet" href="../static/css/styles.css">
-<link rel="stylesheet" href="../static/css/forum.css">
-<style>
-    .search-container {
+    <link rel="stylesheet" href="../static/css/forum.css">
+    <style>
+        /* Общие стили для контейнера поиска */
+        .search-container {
             display: flex;
             margin-top: 20px;
-            max-width: 100%; /* Set maximum width of container */
+            max-width: 100%;
             margin-left: auto;
-            margin-right: auto; /* Added to center horizontally */
-            align-items: center; /* Vertically align the items in the container */
-            justify-content: center; /* horizontally align the items in the container */
+            margin-right: auto;
+            align-items: center;
+            justify-content: center;
         }
 
+        /* Адаптация для мобильных устройств */
         @media (max-width: 768px) {
             .search-container {
-                flex-direction: column; /* Stack elements vertically on smaller screens */
-                align-items: stretch; /* Allow input field to occupy full width */
+                flex-direction: column;
+                align-items: stretch;
             }
 
             .search-input, .search-button, .new-theme-button {
@@ -28,15 +30,17 @@
             }
         }
 
+        /* Стили для поля ввода */
         .search-input {
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px 0 0 5px;
-            flex-grow: 0.5; /* Modified this */
+            flex-grow: 0.5;
             box-sizing: border-box;
-            max-width: 400px; /*Added this*/
+            max-width: 400px;
         }
 
+        /* Стили для кнопки поиска */
         .search-button {
             padding: 10px 15px;
             background-color: #007bff;
@@ -45,81 +49,144 @@
             border-radius: 0 5px 5px 0;
             cursor: pointer;
             white-space: nowrap;
-
         }
 
+        /* Стили для кнопки создания новой темы */
         .new-theme-button {
             padding: 10px 15px;
-            background-color: #28a745; /* Green color for contrast */
+            background-color: #28a745;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             white-space: nowrap;
-            margin-left: 5px; /* Add some spacing to the left*/
-            text-decoration: none; /*Remove the default underline*/
+            margin-left: 5px;
+            text-decoration: none;
         }
 
         .new-theme-button:hover {
-            background-color: #218838; /* Darker shade of green on hover */
+            background-color: #218838;
         }
 
+        /* Стили для заголовков тем */
         .theme-title a {
             text-decoration: none;
-            color: #333; /* Dark gray color for the title */
+            color: #333;
             display: block;
             font-size: 1.2em;
-            font-weight: 600; /* Semi-bold font-weight */
+            font-weight: 600;
             margin-bottom: 5px;
             padding: 8px 12px;
             border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
-            background-color: #f9f9f9; /* Light background color */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: #f9f9f9;
         }
 
         .theme-title a:hover {
-            background-color: #e0f7fa; /* Light cyan background on hover */
-            color: #007bff; /* Blue color on hover */
-            text-decoration: none; /* Remove default hover underline */
+            background-color: #e0f7fa;
+            color: #007bff;
+            text-decoration: none;
         }
-</style>
+
+        /* Общие стили для контейнера курса */
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .course-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .course-description {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .lesson {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .lesson-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .lesson-content {
+            font-size: 1em;
+            color: #555;
+        }
+    </style>
+
     <div class="container">
         <div class="course-title">{{ course.name }}</div>
-        
         <div class="course-description">
             <p>{{ course.description }}</p>
         </div>
-        
-      <iframe
-      width="720"
-      height="405"
-      src="https://rutube.ru/play/embed/0757bdebd2eabaa9ff60ac8c827ddefa"
-      frameBorder="0"
-      allow="clipboard-write; autoplay"
-      webkitAllowFullScreen
-      mozallowfullscreen
-      allowFullScreen></iframe>
-  
+
+        <!-- Встроенное видео -->
+        <div class="video-container">
+            <iframe
+                width="720"
+                height="405"
+                src="https://rutube.ru/play/embed/0757bdebd2eabaa9ff60ac8c827ddefa"
+                frameBorder="0"
+                allow="clipboard-write; autoplay"
+                webkitAllowFullScreen
+                mozallowfullscreen
+                allowFullScreen>
+            </iframe>
+        </div>
+
+        <!-- Модули курса -->
         {% set cnt = namespace(value=0) %}
         {% for module in course.modules %}
         <div class="section">
             <div class="section-title">{{ module.name }}</div>
-            
+
+            <!-- Уроки -->
             {% for lesson in module.lessons %}
             <div class="lesson">
-                <div class="lesson-title"><h4 class="theme-title"><a href ="{{url_for('teory', nomer = relo.get(lesson.name, '#')) }}"> {{ lesson.name }} </a></h4> </div>
+                <div class="lesson-title">
+                    <h4 class="theme-title">
+                        <a href="{{ url_for('teory', nomer=relo.get(lesson.name, '#')) }}">
+                            {{ lesson.name }}
+                        </a>
+                    </h4>
+                </div>
                 <div class="lesson-content">{{ lesson.description }}</div>
             </div>
             {% endfor %}
-            
+
+            <!-- Тесты -->
             {% for test in module.tests %}
-                <a href="/course/{{ course_id }}/test/{{ cnt.value }}" style="text-decoration: none">
-                    <div class="lesson">
-                        <div class="lesson-title">{{ test.name }}</div>
-                        <div class="lesson-content">{{ test.description }}</div>
-                    </div>
-                </a>
-                {% set cnt.value = cnt.value + 1 %}
+            <a href="/course/{{ course_id }}/test/{{ cnt.value }}" style="text-decoration: none">
+                <div class="lesson">
+                    <div class="lesson-title">{{ test.name }}</div>
+                    <div class="lesson-content">{{ test.description }}</div>
+                </div>
+            </a>
+            {% set cnt.value = cnt.value + 1 %}
             {% endfor %}
         </div>
         {% endfor %}
