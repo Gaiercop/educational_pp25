@@ -1,0 +1,15 @@
+[
+    {
+        "id": "1738926388362",
+        "name": "фан клуб темира",
+        "description": "z",
+        "access_level": "public",
+        "creator_id": "ГЕРМАН",
+        "members": [
+            "ГЕРМАН",
+            "ТЕМИРКА"
+        ],
+        "created_at": "2025-02-07T14:06:28.362427",
+        "token": "989bc506ec71b712dcc77aca8500d4bc31870bb5528bfa836148332befc6ef1b"
+    }
+]

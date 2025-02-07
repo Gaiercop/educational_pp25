@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Решение варианта{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Решение варианта</h1>
+    <form method="POST">
+        {% for task in variant.tasks %}
+        <div class="task-item">
+            <p>Задание {{ task.id }}: {{ task.text }}</p>
+            {% if task.options %}
+            <div class="answers">
+                {% for option in task.options %}
+                <label>
+                    <input type="radio" name="task_{{ task.id }}" value="{{ option }}" required>
+                    {{ option }}
+                </label>
+                {% endfor %}
+            </div>
+            {% else %}
+            <input type="text" name="task_{{ task.id }}" required>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="submit-btn">Отправить ответы</button>
+    </form>
+</div>
+{% endblock %}

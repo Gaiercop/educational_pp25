@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Создание варианта{% endblock %}
+
+{% block content %}
+<div class="variant-container">
+    <h1 class="title">Создание варианта теста</h1>
+    <form method="POST" class="variant-form">
+        <div class="tasks-list">
+            {% for task in tasks %}
+            <div class="task-container">
+                <input type="checkbox" name="selected_tasks" value="{{ task.id }}" id="task_{{ task.id }}">
+                <label for="task_{{ task.id }}"><strong>Задание {{ task.id }}</strong></label>
+                <p><strong>Текст:</strong> {{ task.text }}</p>
+                {% if task.options %}
+                <p><strong>Варианты ответов:</strong> {{ task.options | join(', ') }}</p>
+                {% endif %}
+                <p><strong>Ответ:</strong> {{ task.answer }}</p>
+                <p><strong>Теги:</strong> {{ task.tags | join(', ') }}</p>
+                <p><strong>Сложность:</strong> {{ task.difficulty }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="submit-btn">Создать вариант</button>
+    </form>
+</div>
+<style>
+    .variant-container {
+        max-width: 800px;
+        margin: 20px auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .title {
+        color: #2E7D32;
+        text-align: center;
+    }
+    .task-container {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+    .task-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .submit-btn {
+        background: #2E7D32;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 15px;
+    }
+    .submit-btn:hover {
+        background: #1B5E20;
+    }
+</style>
+{% endblock %}
