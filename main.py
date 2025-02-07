@@ -82,7 +82,34 @@ def create_variant():
     auth_check = handle_authentication(sid)
     if auth_check:
         return auth_check
+    tasks_id = get_all_taskid()
+    all_filters = set()
+    tasks_data = [[] for i in range(len(tasks_id))]
+    for i in range(len(tasks_id)):
+        tasks_data[i] = get_task_byid(tasks_id[i])
+        tasks_data[i]['options'] = tasks_data[i]['options'].split(';')
 
+        tasks_data[i]['tags'] = tasks_data[i]['tags'].split(';')
+        for tag in tasks_data[i]['tags']:
+            all_filters.add(tag)
+    selected_tags = []
+    all_filters = ["орфоэпия",
+                   "паронимы", "лексические_нормы", "морфологические_нормы", "синтаксические_нормы",
+                   "правописание_корней", "правописание_приставок", "правописание_суффиксов", "правописание_глаголов",
+                   "правописание_причастий", "правописание_не", "слитное_раздельное_написание", "н_нн",
+                   "знаки_препинания_простое_предложение", "знаки_препинания_обособленные_конструкции",
+                   "знаки_препинания_вводные_слова", "знаки_препинания_сложное_предложение", "средства_выразительности",
+                   "сочинение_егэ", "аргументы_к_сочинению"]
+    res = []
+    for task in tasks_data:
+        cur = task['tags']
+        fl = 0
+        for tag in selected_tags:
+            if (tag not in cur):
+                fl = 1
+        if (fl == 0):
+            res.append(task)
+    tasks_data = res[::]
     user = get_current_user(sid)
     if not user:
         return redirect(url_for('login'))
@@ -93,8 +120,13 @@ def create_variant():
         with open("tasks.json", 'r', encoding='utf-8') as f:
             all_tasks = json.load(f)
 
-        selected_tasks = [task for task in all_tasks if task['id'] in selected_ids]
-
+        selected_tasks = []
+        for task_id in selected_ids:
+            task_data = get_task_byid(task_id)
+            task_data['options'] = task_data['options'].split(';')
+            task_data['tags'] = task_data['tags'].split(';')
+            selected_tasks.append(task_data)
+        print(selected_tasks)
         variant_id = str(uuid.uuid4())[:8]
         variant_data = {
             'id': variant_id,
@@ -112,7 +144,7 @@ def create_variant():
     with open("tasks.json", 'r', encoding='utf-8') as f:
         tasks = json.load(f)
 
-    return render_template('create_variant.html', tasks=tasks, sid = sid)
+    return render_template('create_variant.html', tasks=tasks_data, sid = sid)
 
 # Решение варианта
 @app.route('/solve_variant/<variant_id>', methods=['GET', 'POST'])
