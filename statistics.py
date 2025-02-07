@@ -169,4 +169,4 @@ def add_task_byid(text, options, answer, tags, difficulty, type):
     conn.close()
 
 if __name__ == "__main__":
-    reset_database()
+    recreate_tasks_table()
