@@ -83,13 +83,16 @@
 
 import json
 import uuid
+from datetime import datetime
 from typing import Dict, Optional
 
 class User:
-    def __init__(self, username: str, pwd: str, access: int):
+    def __init__(self, username: str, pwd: str, access: int, email: str, birthday: str) -> None:
+        self.email = email
         self.username = username
         self.pwd = pwd
         self.access = access
+        self.birthday = birthday
 
     def verify_password(self, pwd: str) -> bool:
         return self.pwd == pwd
@@ -98,7 +101,9 @@ class User:
         return {
             "username": self.username,
             "pwd": self.pwd,
-            "access": self.access
+            "access": self.access,
+            "birthday": self.birthday,
+            "email": self.email
         }
 
 class AuthManager:
@@ -158,7 +163,7 @@ class AuthManager:
             with open('users.json', 'r') as f:
                 data = json.load(f)
                 self.users = [
-                    User(user['username'], user['pwd'], user['access'])
+                    User(user['username'], user['pwd'], user['access'], user['email'], user['birthday'])
                     for user in data
                 ]
         except (FileNotFoundError, json.JSONDecodeError):
