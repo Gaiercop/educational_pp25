@@ -7,33 +7,42 @@
         min-height: 100vh;
     }
 
+    .profile-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
     .stat-item {
         transition: all 0.3s ease;
         background: white;
         border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
     .stat-item:hover {
         transform: translateY(-3px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
     }
 
     .progress {
         height: 12px;
         border-radius: 6px;
         overflow: hidden;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .stat-row {
         display: flex;
         align-items: center;
-        padding: 15px;
         gap: 20px;
     }
 
     .category-name {
         flex: 0 0 25%;
         min-width: 200px;
+        font-weight: 600;
+        color: #343a40;
     }
 
     .progress-container {
@@ -45,18 +54,7 @@
         text-align: right;
     }
 
-    @media (max-width: 768px) {
-        .stat-row {
-            flex-direction: column;
-            align-items: start;
-        }
-
-        .category-name,
-        .progress-container,
-        .stats-numbers {
-            width: 100%;
-        }
-    }
+    /* Цвета */
     .bg-orange {
         background-color: #ffa500 !important;
     }
@@ -73,19 +71,61 @@
     .progress-bar {
         transition: width 1s ease-in-out, background-color 0.5s ease;
     }
-    .progress {
-        height: 12px;
-        border-radius: 6px;
-        box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-    }
-
-    .progress-bar {
-        transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        background-color: #6c757d !important; /* Серый цвет Bootstrap */
-    }
 
     .bg-light {
         background-color: #f8f9fa !important; /* Светлый фон для контраста */
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .stat-row {
+            flex-direction: column;
+            align-items: start;
+        }
+
+        .category-name,
+        .progress-container,
+        .stats-numbers {
+            width: 100%;
+        }
+    }
+
+    /* Иконка аватара */
+    .avatar-icon {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Стили для ссылок */
+    .text-decoration-none:hover {
+        text-decoration: none;
+    }
+
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    .card-body {
+        padding: 25px;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+    .badge {
+        font-size: 0.9em;
+        padding: 0.5em 0.75em;
     }
 </style>
 
@@ -95,12 +135,21 @@
         <div class="col-lg-3">
             <div class="card profile-card border-0 shadow-lg">
                 <div class="card-body text-center px-4 py-5">
-                    <div class="avatar-icon bg-soft-success text-success rounded-circle p-4 mb-3">
+                    <div class="avatar-icon bg-soft-success text-success rounded-circle mb-3">
                         <i class="fas fa-user-graduate fa-3x"></i>
                     </div>
                     <h3 class="mb-3 fw-bold text-success">{{ username }}</h3>
                     <div class="badge bg-soft-success text-success fs-6 rounded-pill px-3 py-2">
                         <i class="fas fa-shield-alt me-2"></i>{{ access }}
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="mb-2">
+                            <i class="fas fa-envelope me-2 text-muted"></i> Email: {{email}}
+                        </div>
+                        <div class="mb-2">
+                            <i class="fas fa-calendar-alt me-2 text-muted"></i> Дата рождения: {{birthday}}
+                        </div>
                     </div>
 
                     {% if access == "Учитель" %}
@@ -147,7 +196,7 @@
                 </div>
             </div>
             <!-- Список групп -->
-            <div class="card border-0 shadow-sm">
+            <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body p-4">
                     <h4 class="text-success fw-bold mb-4">
                         <i class="fas fa-users me-2"></i>Мои группы
@@ -199,7 +248,6 @@
                     {% endif %}
                 </div>
             </div>
-        </div>
             <!-- Статистика выполнения -->
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body p-4">
@@ -223,17 +271,24 @@
                                 </div>
 
                                 <div class="progress-container">
-    <div class="progress-container">
-        <div class="progress bg-light
-            {% if percent <= 20 %}bg-danger
-            {% elif percent <= 40 %}bg-warning
-            {% elif percent <= 60 %}bg-orange
-            {% elif percent <= 80 %}bg-info
-            {% else %}bg-success{% endif %}"
-            style="width: {{ percent }}%">
-        </div>
-    </div>
-</div>
+                                    <div class="progress">
+                                        <div class="progress-bar
+                                             {% if percent <= 20 %} bg-danger
+                                             {% elif percent <= 40 %} bg-warning
+                                             {% elif percent <= 60 %} bg-orange
+                                             {% elif percent <= 80 %} bg-info
+                                             {% else %} bg-success {% endif %}"
+                                             role="progressbar"
+                                             style="width: {{ percent }}%;"
+                                             aria-valuenow="{{ percent }}"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                            <span class="progress-text">{{ percent }}%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                                 <div class="stats-numbers">
                                     <div class="text-success fw-bold">{{ stats.correct }}/{{ stats.total }}</div>
                                     <div class="text-success">{{ percent }}%</div>
@@ -250,6 +305,7 @@
                     {% endif %}
                 </div>
             </div>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -6,7 +6,12 @@ import json
 from datetime import datetime
 from get_themebyid import *
 from statistics import *
+<<<<<<< HEAD
 from hashlib import *
+=======
+import uuid
+
+>>>>>>> e23c4820f66b31a81eae4777d5f4846b857b3184
 app = Flask(__name__)
 auth = AuthManager()
 app.auth = auth
@@ -16,6 +21,7 @@ COURSES_DIR = "./courses"
 TESTS_DIR = "./tests"
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 UPLOAD_FOLDER = 'static/uploads/group_avatars'
+VARIANTS_DIR = "./variants"
 
 
 @app.context_processor
@@ -34,16 +40,13 @@ def datetime_format(value):
     return datetime.fromisoformat(value).strftime('%d.%m.%Y %H:%M')
 
 
-
 def get_user_groups(username: str):
     groups_file = 'groups/groups.json'
     user_groups = []
 
-
     try:
         with open(groups_file, 'r', encoding='utf-8') as f:
             all_groups = json.load(f)
-
 
         for group in all_groups:
             if username in group.get('members', []) or username == group.get('creator_id'):
@@ -75,6 +78,85 @@ def handle_authentication(sid: str):
         return redirect(url_for('login') + f'?sid={sid}')
     return None
 
+# Создание варианта теста
+@app.route('/create_variant', methods=['GET', 'POST'])
+def create_variant():
+    sid = request.args.get('sid')
+    auth_check = handle_authentication(sid)
+    if auth_check:
+        return auth_check
+
+    user = get_current_user(sid)
+    if not user:
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        selected_ids = list(map(int, request.form.getlist('selected_tasks')))
+
+        with open("tasks.json", 'r', encoding='utf-8') as f:
+            all_tasks = json.load(f)
+
+        selected_tasks = [task for task in all_tasks if task['id'] in selected_ids]
+
+        variant_id = str(uuid.uuid4())[:8]
+        variant_data = {
+            'id': variant_id,
+            'created_at': datetime.now().isoformat(),
+            'tasks': selected_tasks
+        }
+
+        os.makedirs(VARIANTS_DIR, exist_ok=True)
+        with open(os.path.join(VARIANTS_DIR, f"{variant_id}.json"), 'w', encoding='utf-8') as f:
+            json.dump(variant_data, f, ensure_ascii=False, indent=4)
+
+        return redirect(url_for('solve_variant', variant_id=variant_id, sid=sid))
+
+    with open("tasks.json", 'r', encoding='utf-8') as f:
+        tasks = json.load(f)
+
+    return render_template('create_variant.html', tasks=tasks, sid = sid)
+
+# Решение варианта
+@app.route('/solve_variant/<variant_id>', methods=['GET', 'POST'])
+def solve_variant(variant_id):
+    sid = request.args.get('sid')
+    variant_file = os.path.join(VARIANTS_DIR, f"{variant_id}.json")
+    if not os.path.exists(variant_file):
+        abort(404)
+
+    auth_check = handle_authentication(sid)
+    if auth_check:
+        return auth_check
+
+    user = get_current_user(sid)
+    if not user:
+        return redirect(url_for('login'))
+
+    with open(variant_file, 'r', encoding='utf-8') as f:
+        variant_data = json.load(f)
+
+    if request.method == 'POST':
+        correct = 0
+        results = []
+
+        for task in variant_data['tasks']:
+            user_answer = request.form.get(f'task_{task["id"]}')
+            is_correct = user_answer == task['answer']
+            if is_correct:
+                correct += 1
+            results.append({
+                'task_id': task['id'],
+                'correct': is_correct,
+                'user_answer': user_answer,
+                'correct_answer': task['answer']
+            })
+
+        score = f"{correct}/{len(variant_data['tasks'])}"
+        return render_template('variant_results.html', score=score, results=results, sid=sid)
+
+    return render_template('solve_variant.html', variant=variant_data, sid=sid)
+
+
 
 @app.route('/logout')
 def logout():
@@ -90,7 +172,6 @@ def get_group_by_id(group_id):
     groups_file = 'groups/groups.json'
     if not os.path.exists(groups_file):
         return None
-
 
     with open(groups_file, 'r', encoding='utf-8') as f:
         groups = json.load(f)
@@ -113,21 +194,17 @@ def group_page(group_id):
     sid = request.args.get('sid')
     user = auth.get_user_by_session(sid)
 
-
     group = get_group_by_id(group_id)
     if not group:
         abort(404)
 
-
     if not user or user.username not in group['members']:
         return redirect(url_for('login'))
-
 
     error = None
     if request.method == 'POST' and user.username == group['creator_id']:
         action = request.form.get('action')
         target_user = request.form.get('username')
-
 
         if action == 'add':
             if auth.find_user(target_user):
@@ -374,7 +451,7 @@ def submit_task():
 @app.route('/tasks')
 def tasks():
     sid = request.args.get('sid')
-    
+
     if not auth.check_session(sid) if sid else False:
         return redirect(url_for('login'))
 
@@ -389,11 +466,11 @@ def tasks():
                           if any(tag in task['tags'] for tag in selected_tags)]
 
     all_tags = {tag for task in tsks for tag in task['tags']}
-    
+
     return render_template('tasks.html',
-                         tasks=filtered_tasks,
-                         all_tags=all_tags,
-                         sid=sid)
+                           tasks=filtered_tasks,
+                           all_tags=all_tags,
+                           sid=sid)
 
 
 # ================== Тесты ==================
@@ -450,7 +527,9 @@ def register():
             user = User(
                 username=request.form['username'],
                 pwd=request.form['password'],
-                access=1 if request.form['access'] == 'Ученик' else 2
+                access=1 if request.form['access'] == 'Ученик' else 2,
+                birthday=str(datetime.strptime("2023-04-12", "%Y-%m-%d").date()),
+                email=request.form['email']
             )
             auth.add_user(user)
             return redirect(url_for('login'))
@@ -468,36 +547,41 @@ def register():
 @app.route('/profile')
 def profile():
     sid = request.args.get('sid')
-    user = auth.get_user_by_session(sid)
+    if not auth.check_session(sid) if sid else False:
+        return redirect(url_for('login'))
 
     user = auth.get_user_by_session(sid)
+
+
     userid = user.username
     tasks_stats = get_tasks_stats(userid)
     total_tasks = sum(stats['total'] for stats in tasks_stats.values())
 
     if not user:
         return redirect(url_for('login'))
-    
+
     user_groups = get_user_groups(user.username)
-    
+
     all_members = set()
     for group in user_groups:
         all_members.update(group.get('members', []))
-    
+
     all_users = auth.users
-    
+
     students_count = sum(
-        1 for username in all_members 
+        1 for username in all_members
         if any(u.username == username and int(u.access) == 1 for u in all_users)
     )
 
     return render_template("profile.html",
-                        sid=sid,
-                        username=user.username,
-                        access="Учитель" if int(user.access) == 2 else "Ученик",
-                        groups=user_groups,
-                        students_count=students_count, tasks_stats=tasks_stats,
-        total_tasks=total_tasks)
+                           sid=sid,
+                           username=user.username,
+                           access="Учитель" if int(user.access) == 2 else "Ученик",
+                           groups=user_groups,
+                           students_count=students_count, tasks_stats=tasks_stats,
+                           birthday=user.birthday, email=user.email,
+                           total_tasks=total_tasks)
+
 
 @app.route('/course/<int:course_id>')
 def course(course_id):
