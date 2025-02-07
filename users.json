@@ -1,67 +1,9 @@
 [
   {
-    "username": "sigma",
-    "pwd": "boy",
-    "access": "0"
-  },
-  {
-    "username": "322",
-    "pwd": "322",
-    "access": "1"
-  },
-  {
-    "username": "123",
-    "pwd": "123",
-    "access": "1"
-  },
-  {
-    "username": "Kmes",
-    "pwd": "12345",
-    "access": "2"
-  },
-  {
-    "username": "\u0413\u0415\u0420\u041c\u0410\u041d",
-    "pwd": "\u041f\u0423\u0428",
-    "access": "2"
-  },
-  {
-    "username": "zxc",
-    "pwd": "322",
-    "access": "1"
-  },
-  {
-    "username": "zxccc",
-    "pwd": "322",
-    "access": "2"
-  },
-  {
     "username": "login",
     "pwd": "pass",
-    "access": "1"
-  },
-  {
-    "username": "\u0421\u0442\u0430\u0441",
-    "pwd": "\u0429\u0435\u0433\u043b\u043e\u0432",
-    "access": "1"
-  },
-  {
-    "username": "for_demonstration",
-    "pwd": "12345",
-    "access": 2
-  },
-  {
-    "username": "demo",
-    "pwd": "12345",
-    "access": 2
-  },
-  {
-    "username": "demo1",
-    "pwd": "12345",
-    "access": 2
-  },
-  {
-    "username": "demo2",
-    "pwd": "12345",
-    "access": 2
+    "access": 2,
+    "birthday": "2023-04-12",
+    "email": "dfd@erf"
   }
 ]
