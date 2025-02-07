@@ -12,5 +12,12 @@
     "access": 2,
     "birthday": "0554-04-23",
     "email": "sd@d.ru"
+  },
+  {
+    "username": "\u0421\u0442\u0430\u0441",
+    "pwd": "\u0429\u0435\u0433\u043b\u043e\u0432",
+    "access": 1,
+    "birthday": "1111-11-11",
+    "email": "zxc@gmail.com"
   }
 ]
