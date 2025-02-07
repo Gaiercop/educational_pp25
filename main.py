@@ -526,7 +526,7 @@ def register():
                 username=request.form['username'],
                 pwd=request.form['password'],
                 access=1 if request.form['access'] == 'Ученик' else 2,
-                birthday=str(datetime.strptime("2023-04-12", "%Y-%m-%d").date()),
+                birthday=str(datetime.strptime(request.form['birthday'], "%Y-%m-%d").date()),
                 email=request.form['email']
             )
             auth.add_user(user)
