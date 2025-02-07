@@ -3,35 +3,29 @@
 {% block title %}Логинирование{% endblock %}
 
 {% block content %}
-    <link rel="stylesheet" href="../static/css/auth.css">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card auth-card">
-                    <div class="card-body">
-                        <h3 class="text-center">{{ message }}</h3>
-                        <h3 class="text-center course-title">Вход в систему</h3>
-                        <form method="POST">
-                            <div class="mb-4">
-                                <label for="username" class="form-label">Логин</label>
-                                <input type="text" id="username" name="username" class="form-control custom-input" required>
-                            </div>
-                            <div class="mb-4">
-                                <label for="password" class="form-label">Пароль</label>
-                                <input type="password" id="password" name="password" class="form-control custom-input" required>
-                            </div>
-                            <button type="submit" class="btn btn-custom w-100">Войти</button>
-                        </form>
-                    </div>
+<link rel="stylesheet" href="../static/css/auth.css">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card auth-card">
+                <div class="card-body">
+                    <h3 class="text-center">{{ message }}</h3>
+                    <h3 class="text-center course-title">Вход в систему</h3>
+                    <form method="POST">
+                        <div class="mb-4">
+                            <label for="username" class="form-label">Логин</label>
+                            <input type="text" id="username" name="username" class="form-control custom-input" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Пароль</label>
+                            <input type="password" id="password" name="password" class="form-control custom-input"
+                                   required>
+                        </div>
+                        <button type="submit" class="btn btn-custom w-100">Войти</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+</div>
 {% endblock %}

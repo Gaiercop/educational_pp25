@@ -1,112 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizzes</title>
-    <link rel="stylesheet" href="../static/css/test.css">
-</head>
-<body>
-    <header class="main-header">
-        <div class="container">
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="catalogs.html">Courses</a></li>
-                    <li><a href="tests.html" class="active">Tests</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="login.html" class="btn-login">Login</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+{% extends 'base.html' %}
 
-    <section class="tests">
-        <div class="container">
-            <h2>Take a Test</h2>
+{% block title %}{{ test.name }}{% endblock %}
+
+{% block content %}
+<section class="tests">
+    <div class="container">
+        <h2>{{ test.name }}</h2>
+        
+        <form action="{{ url_for('test_result', course_id=course_id, test_id=test_id) }}" method="get" id="test-form">
+            {% for question in test.questions %}
             <div class="test">
-                <h3>What is the capital of France?</h3>
+                <h3>{{ question.name }}</h3>
+                {% set cnt = loop.index %}
                 <div class="options">
-                    <label>
-                        <input type="radio" name="question1" value="a">
-                        <span>Berlin</span>
+                    {% for answer in question.answers %}
+                    <label class="option-label">
+                        <input type="radio" name="question{{ cnt }}" value="{{ answer }}">
+                        <span>{{ answer }}</span>
                     </label>
-                    <label>
-                        <input type="radio" name="question1" value="b">
-                        <span>Madrid</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="question1" value="c">
-                        <span>Paris</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="question1" value="d">
-                        <span>Rome</span>
-                    </label>
+                    {% endfor %}
                 </div>
             </div>
-
-            <div class="test">
-                <h3>Which programming language is used for web development?</h3>
-                <div class="options">
-                    <label>
-                        <input type="radio" name="question2" value="a">
-                        <span>Python</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="question2" value="b">
-                        <span>JavaScript</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="question2" value="c">
-                        <span>Java</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="question2" value="d">
-                        <span>C++</span>
-                    </label>
-                </div>
+            {% endfor %}
+            
+            <div class="buttons">
+                <button type="submit" class="btn-primary">Завершить</button>
+                <button type="reset" class="btn-secondary">Сбросить</button>
             </div>
+        </form>
+    </div>
+</section>
 
-            <div class="test">
-                <h3>What does SEO stand for?</h3>
-                <div class="options">
-                    <label>
-                        <input type="radio" name="question3" value="a">
-                        <span>Search Engine Optimization</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="question3" value="b">
-                        <span>Search Engine Observation</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="question3" value="c">
-                        <span>Systematic Engine Operation</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="question3" value="d">
-                        <span>Server Engine Output</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="submit">
-                <button class="btn-primary">Submit Answers</button>
-            </div>
-        </div>
-    </section>
-
-    <footer class="main-footer">
-        <div class="container">
-            <p>&copy; 2025 Educational Portal. All Rights Reserved.</p>
-            <nav>
-                <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
-            </nav>
-        </div>
-    </footer>
-</body>
-</html>
+<style>
+    .tests {
+        margin-top: 20px;
+    }
+    .test {
+        margin-bottom: 20px;
+    }
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .option-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .buttons {
+        margin-top: 20px;
+        display: flex;
+        gap: 15px;
+    }
+    .btn-primary, .btn-secondary {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+</style>
+{% endblock %}

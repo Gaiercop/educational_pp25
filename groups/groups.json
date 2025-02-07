@@ -1,0 +1,25 @@
+[
+    {
+        "id": "1738618107866",
+        "name": "ЕГЭ",
+        "description": "ЕГЭ",
+        "access_level": "public",
+        "creator_id": "Kmes",
+        "members": [
+            "Kmes",
+            "322"
+        ],
+        "created_at": "2025-02-04T00:28:27.867745"
+    },
+    {
+        "id": "1738625943559",
+        "name": "ЕГЭ по русскому",
+        "description": "Группа для тех, кто сдаёт ЕГЭ по русскому.",
+        "access_level": "private",
+        "creator_id": "demo2",
+        "members": [
+            "demo2"
+        ],
+        "created_at": "2025-02-04T02:39:03.560322"
+    }
+]

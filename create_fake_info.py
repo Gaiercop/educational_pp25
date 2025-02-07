@@ -1,4 +1,5 @@
 from get_themebyid import *
+
 # Section 1: General Information About the Exam
 theme_id_1 = create_theme(
     title="Общая информация о ЕГЭ по русскому языку",
@@ -41,7 +42,6 @@ add_new_message(
     "Для начала, изучите случаи, когда пишется одна 'н' и когда две. Также обратите внимание на зависимые слова. Практика - ключ к успеху!"
 )
 
-
 # Section 3: Punctuation
 theme_id_3 = create_theme(
     title="Пунктуация в русском языке",
@@ -63,7 +63,6 @@ add_new_message(
     "Запятая перед 'и' ставится, если соединяет две части сложного предложения. Но есть и исключения. Изучайте правила!"
 )
 
-
 # Section 4: Essay Writing
 theme_id_4 = create_theme(
     title="Подготовка к сочинению ЕГЭ",
@@ -84,7 +83,6 @@ add_new_message(
     "ExpertAnna",
     "Аргументы можно искать в произведениях литературы, исторических фактах, а также в личном опыте. Практикуйтесь в поиске и оформлении аргументов."
 )
-
 
 # Section 5: Text Analysis
 theme_id_5 = create_theme(
