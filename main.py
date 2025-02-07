@@ -116,7 +116,14 @@ def create_variant():
 
     if request.method == 'POST':
         selected_ids = list(map(int, request.form.getlist('selected_tasks')))
-
+        check_system = request.form.get('check')
+        check_id = int()
+        
+        if check_system == "Полная": check_id = 0
+        elif check_system == "Частичная": check_id = 1
+        elif check_system == "Только баллы": check_id = 2
+        else: check_id = 3
+        
         with open("tasks.json", 'r', encoding='utf-8') as f:
             all_tasks = json.load(f)
 
@@ -133,6 +140,7 @@ def create_variant():
             'created_at': datetime.now().isoformat(),
             'tasks': selected_tasks,
             'created_by': user.username,
+            'check': check_id,
         }
 
         os.makedirs(VARIANTS_DIR, exist_ok=True)
@@ -182,7 +190,7 @@ def solve_variant(variant_id):
             })
 
         score = f"{correct}/{len(variant_data['tasks'])}"
-        return render_template('variant_results.html', score=score, results=results, sid=sid)
+        return render_template('variant_results.html', score=score, results=results, check_id = variant_data['check'], sid=sid)
 
     return render_template('solve_variant.html', variant=variant_data, sid=sid)
 
@@ -469,7 +477,6 @@ def submit_task():
 
 @app.route('/tasks')
 def tasks():
-
     sid = request.args.get('sid')
     tasks_id = get_all_taskid()
     if not auth.check_session(sid) if sid else False:
