@@ -82,7 +82,38 @@ def create_variant():
     auth_check = handle_authentication(sid)
     if auth_check:
         return auth_check
+    tasks_id = get_all_taskid()
+    all_filters = set()
+    tasks_data = [[] for i in range(len(tasks_id))]
+    for i in range(len(tasks_id)):
+        tasks_data[i] = get_task_byid(tasks_id[i])
+        tasks_data[i]['options'] = tasks_data[i]['options'].split(';')
 
+        tasks_data[i]['tags'] = tasks_data[i]['tags'].split(';')
+        for tag in tasks_data[i]['tags']:
+            all_filters.add(tag)
+    selected_tags = []
+    all_filters = ["орфоэпия",
+                   "паронимы", "лексические_нормы", "морфологические_нормы", "синтаксические_нормы",
+                   "правописание_корней", "правописание_приставок", "правописание_суффиксов", "правописание_глаголов",
+                   "правописание_причастий", "правописание_не", "слитное_раздельное_написание", "н_нн",
+                   "знаки_препинания_простое_предложение", "знаки_препинания_обособленные_конструкции",
+                   "знаки_препинания_вводные_слова", "знаки_препинания_сложное_предложение", "средства_выразительности",
+                   "сочинение_егэ", "аргументы_к_сочинению"]
+    print(selected_tags)
+    res = []
+    for task in tasks_data:
+        cur = task['tags']
+        fl = 0
+        for tag in selected_tags:
+            if (tag not in cur):
+                fl = 1
+        if (fl == 0):
+            res.append(task)
+    tasks_data = res[::]
+    print(tasks_data)
+    for task in tasks_data:
+        print(task)
     user = get_current_user(sid)
     if not user:
         return redirect(url_for('login'))
@@ -112,7 +143,7 @@ def create_variant():
     with open("tasks.json", 'r', encoding='utf-8') as f:
         tasks = json.load(f)
 
-    return render_template('create_variant.html', tasks=tasks, sid = sid)
+    return render_template('create_variant.html', tasks=tasks_data, sid = sid)
 
 # Решение варианта
 @app.route('/solve_variant/<variant_id>', methods=['GET', 'POST'])
