@@ -3,114 +3,151 @@
 {% block title %}{{ teory.name }}{% endblock %}
 
 {% block content %}
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Теория Относительности</title>
+    <title>{{ teory.name }}</title>
     <style>
-    body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f9;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
 
-    .course-title {
-        font-size: 2em;
-        margin: 20px 0;
-        text-align: center;
-    }
+        .course-title {
+            font-size: 2.5em;
+            margin: 0 0 30px;
+            text-align: center;
+            color: #2c3e50;
+            font-weight: 700;
+        }
 
-    .course-description {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
+        .course-description {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    .section {
-        margin-bottom: 30px;
-    }
+        .course-description:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
 
-    .section-title {
-        font-size: 1.5em;
-        margin-bottom: 10px;
-        color: #333;
-    }
+        .section {
+            margin-bottom: 40px;
+        }
 
-    .lesson {
-        background: #fff;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 10px;
-    }
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #34495e;
+            font-weight: 600;
+        }
 
-    .lesson-title {
-        font-size: 1.2em;
-        color: #555;
-    }
+        .lesson {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    .lesson-content {
-        margin-top: 5px;
-        color: #666;
-        /* ADD THESE PROPERTIES */
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        white-space: pre-line;
+        .lesson:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
 
-    }
+        .lesson-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
 
+        .lesson-content {
+            margin-top: 10px;
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.8;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-line;
+        }
 
-    .main-footer {
-        background: #333;
-        color: #fff;
-        padding: 20px 0;
-        text-align: center;
-    }
+        .lesson-content h2 {
+            font-size: 1.5em;
+            color: #34495e;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
 
-    .main-footer nav ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-    }
+        .lesson-content p {
+            margin: 0 0 15px;
+        }
 
-    .main-footer nav ul li a {
-        color: #fff;
-        text-decoration: none;
-        font-size: 0.9em;
-    }
+        .lesson-content a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
 
-    .card {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s;
-    }
+        .lesson-content a:hover {
+            text-decoration: underline;
+        }
 
-    .card:hover {
-        transform: translateY(-5px);
-    }
-</style>
+        .main-footer {
+            background: #2c3e50;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .main-footer nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .main-footer nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 500;
+        }
+
+        .main-footer nav ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <main>
             <div class="course-description">
-                <h1 class="course-title"><{{teory.name}}></h1>
+                <h1 class="course-title">{{ teory.name }}</h1>
                 <div class="section">
                     <div class="lesson-content">
-                       <h2>{{teory.description}}</h2>
+                        <h2>{{ teory.description }}</h2>
                     </div>
                 </div>
             </div>
