@@ -63,5 +63,10 @@
     "username": "demo2",
     "pwd": "12345",
     "access": 2
+  },
+  {
+    "username": "\u0422\u0415\u041c\u0418\u0420\u041a\u0410",
+    "pwd": "\u0421\u041e\u0421\u0410\u041b",
+    "access": 1
   }
 ]

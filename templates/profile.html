@@ -152,7 +152,10 @@
                     <h4 class="text-success fw-bold mb-4">
                         <i class="fas fa-users me-2"></i>Мои группы
                     </h4>
-
+                    <a href="{{ url_for('join_group_by_token', sid=request.args.get('sid')) }}"
+                           class="btn btn-success mt-3">
+                            <i class="fas fa-plus-circle me-2"></i>Присоединиться к группе по токену
+                        </a>
                     {% if groups %}
                     <div class="group-list">
                         {% for group in groups %}

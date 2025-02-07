@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
+
+<section class="create-group-section">
+    <div class="container">
+        <div class="group-creation-card">
+            <h2 class="section-title">Присоедниниться к группе по токену</h2>
+            <form class="group-form" method="POST" enctype="multipart/form-data">
+                {% if error %}
+                <div class="form-error alert btn-danger">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="token" class="form-label">
+                        <i class="fas fa-users"></i> {{message}}*
+                    </label>
+                    <input type="text"
+                           id="token"
+                           name="token"
+                           class="form-input"
+                           placeholder="token"
+                           required>
+                </div>
+
+
+                <button type="submit" class="btn btn-custom btn-wide">
+                    <i class="fas fa-plus-circle"></i> Присоединиться
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -6,6 +6,7 @@ import json
 from datetime import datetime
 from get_themebyid import *
 from statistics import *
+from hashlib import *
 app = Flask(__name__)
 auth = AuthManager()
 app.auth = auth
@@ -55,6 +56,7 @@ def get_user_groups(username: str):
                     'members': group.get('members', []),
                     'created_at': group.get('created_at'),
                     'members_count': len(members),
+                    'token': group.get('token')
                 }
                 user_groups.append(group_data)
 
@@ -149,6 +151,44 @@ def group_page(group_id):
                            user=user,
                            error=error)
 
+@app.route('/join_group', methods=['GET', 'POST'])
+def join_group_by_token():
+    sid = request.args.get('sid')
+    auth_check = handle_authentication(sid)
+    if auth_check:
+        return auth_check
+
+    user = get_current_user(sid)
+    if not user:
+        return redirect(url_for('login'))
+
+    message = 'Введите токен, данный учителем для присоединения к группе'
+
+    groups_file = 'groups/groups.json'
+    if (request.method == "POST"):
+        token = request.form.get("token")
+        groups = []
+        if os.path.exists(groups_file):
+            with open(groups_file, 'r', encoding='utf-8') as f:
+                groups = json.load(f)
+
+        for group in groups:
+            if (group['token'] == token):
+
+                if user not in group['members']:
+                    group['members'].append(user.username)
+                    update_group(get_group_by_id(group['id']))
+                    message = "Вы успешно добавлены в группу"
+                else:
+                    message = "Вы уже есть в этой группе"
+
+        with open(groups_file, 'w', encoding='utf-8') as f:
+            json.dump(groups, f, ensure_ascii=False, indent=4)
+        if (len(message) == 0):
+            message = 'Группы с таким токеном нет'
+
+    return render_template("join_group_by_token.html", message=message, sid=sid)
+
 
 @app.route('/create_group', methods=['GET', 'POST'])
 def create_group():
@@ -170,7 +210,8 @@ def create_group():
                 "access_level": request.form.get('access_level', 'public'),
                 "creator_id": user.username,
                 "members": [user.username],
-                "created_at": datetime.now().isoformat()
+                "created_at": datetime.now().isoformat(),
+                "token": sha256((str(datetime.now().isoformat()) + str(int(time.time() * 1000)) + str(user.username)).encode()).hexdigest()
             }
 
             if not group_data['name']:
