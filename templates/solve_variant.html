@@ -3,12 +3,13 @@
 {% block title %}Решение варианта{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Решение варианта</h1>
-    <form method="POST">
+<div class="variant-container">
+    <h1 class="title">Решение варианта</h1>
+    <form method="POST" class="variant-form">
         {% for task in variant.tasks %}
-        <div class="task-item">
-            <p>Задание {{ task.id }}: {{ task.text }}</p>
+        <div class="task-container">
+            <p><strong>Задание {{ task.id }}</strong></p>
+            <p>{{ task.text }}</p>
             {% if task.options %}
             <div class="answers">
                 {% for option in task.options %}
@@ -26,4 +27,34 @@
         <button type="submit" class="submit-btn">Отправить ответы</button>
     </form>
 </div>
+<style>
+    .task-container {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+    .task-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .submit-btn {
+        background: #2E7D32;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 15px;
+    }
+    .submit-btn:hover {
+        background: #1B5E20;
+    }
+</style>
 {% endblock %}

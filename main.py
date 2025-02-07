@@ -100,14 +100,15 @@ def create_variant():
         variant_data = {
             'id': variant_id,
             'created_at': datetime.now().isoformat(),
-            'tasks': selected_tasks
+            'tasks': selected_tasks,
+            'created_by': user.username,
         }
         
         os.makedirs(VARIANTS_DIR, exist_ok=True)
         with open(os.path.join(VARIANTS_DIR, f"{variant_id}.json"), 'w', encoding='utf-8') as f:
             json.dump(variant_data, f, ensure_ascii=False, indent=4)
         
-        return redirect(url_for('solve_variant', variant_id=variant_id, sid=sid))
+        return redirect(url_for('profile', variant_id=variant_id, sid=sid))
     
     with open("tasks.json", 'r', encoding='utf-8') as f:
         tasks = json.load(f)
@@ -514,13 +515,20 @@ def profile():
     
     user = auth.get_user_by_session(sid)
 
+    if not user:
+        return redirect(url_for('login'))
     
     userid = user.username
     tasks_stats = get_tasks_stats(userid)
     total_tasks = sum(stats['total'] for stats in tasks_stats.values())
-
-    if not user:
-        return redirect(url_for('login'))
+    variants = []
+    
+    for file in os.listdir(VARIANTS_DIR):
+        filename = os.fsdecode(file)
+        with open(VARIANTS_DIR + '/' + filename, 'r', encoding = 'utf-8') as f:
+            variant = json.load(f)
+            if variant['created_by'] == userid:
+                variants.append(variant)
     
     user_groups = get_user_groups(user.username)
     
@@ -541,6 +549,7 @@ def profile():
                         access="Учитель" if int(user.access) == 2 else "Ученик",
                         groups=user_groups,
                         students_count=students_count, tasks_stats=tasks_stats,
+                        variants=variants,
         total_tasks=total_tasks)
 
 @app.route('/course/<int:course_id>')
