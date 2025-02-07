@@ -4,18 +4,43 @@
 
 {% block content %}
 <div class="results-container">
-    <h1 class="title">Результаты теста</h1>
-    <p class="score">Ваш результат: <strong>{{ score }}</strong></p>
+    {% if check_id == 0 %}
+        <h1 class="title">Результаты теста</h1>
+        <p class="score">Ваш результат: <strong>{{ score }}</strong></p>
     
-    <div class="results-list">
-        {% for result in results %}
-        <div class="result-item {% if result.correct %}correct{% else %}incorrect{% endif %}">
-            <p><strong>Задание {{ result.task_id }}</strong></p>
-            <p><strong>Ваш ответ:</strong> {{ result.user_answer }}</p>
-            <p><strong>Правильный ответ:</strong> {{ result.correct_answer }}</p>
+        <div class="results-list">
+            {% for result in results %}
+            <div class="result-item {% if result.correct %}correct{% else %}incorrect{% endif %}">
+                <p><strong>Задание {{ result.task_id }}</strong></p>
+                <p><strong>Ваш ответ:</strong> {{ result.user_answer }}</p>
+                <p><strong>Правильный ответ:</strong> {{ result.correct_answer }}</p>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
+    {% endif %}
+
+    {% if check_id == 1 %}
+        <h1 class="title">Результаты теста</h1>
+        <p class="score">Ваш результат: <strong>{{ score }}</strong></p>
+    
+        <div class="results-list">
+            {% for result in results %}
+            <div class="result-item {% if result.correct %}correct{% else %}incorrect{% endif %}">
+                <p><strong>Задание {{ result.task_id }}</strong></p>
+                <p><strong>Ваш ответ:</strong> {{ result.user_answer }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if check_id == 2 %}
+        <h1 class="title">Результаты теста</h1>
+        <p class="score">Ваш результат: <strong>{{ score }}</strong></p>
+    {% endif %}
+
+    {% if check_id == 3 %}
+        <h1 class="title">Работа отправлена на проверку</h1>
+    {% endif %}
     
     <a href="{{ url_for('index', sid=sid) }}" class="return-btn">Вернуться на главную</a>
 </div>
