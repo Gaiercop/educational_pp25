@@ -100,7 +100,6 @@ def create_variant():
                    "знаки_препинания_простое_предложение", "знаки_препинания_обособленные_конструкции",
                    "знаки_препинания_вводные_слова", "знаки_препинания_сложное_предложение", "средства_выразительности",
                    "сочинение_егэ", "аргументы_к_сочинению"]
-    print(selected_tags)
     res = []
     for task in tasks_data:
         cur = task['tags']
@@ -111,9 +110,6 @@ def create_variant():
         if (fl == 0):
             res.append(task)
     tasks_data = res[::]
-    print(tasks_data)
-    for task in tasks_data:
-        print(task)
     user = get_current_user(sid)
     if not user:
         return redirect(url_for('login'))
@@ -124,8 +120,13 @@ def create_variant():
         with open("tasks.json", 'r', encoding='utf-8') as f:
             all_tasks = json.load(f)
 
-        selected_tasks = [task for task in all_tasks if task['id'] in selected_ids]
-
+        selected_tasks = []
+        for task_id in selected_ids:
+            task_data = get_task_byid(task_id)
+            task_data['options'] = task_data['options'].split(';')
+            task_data['tags'] = task_data['tags'].split(';')
+            selected_tasks.append(task_data)
+        print(selected_tasks)
         variant_id = str(uuid.uuid4())[:8]
         variant_data = {
             'id': variant_id,
