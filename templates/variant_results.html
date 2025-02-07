@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Результаты теста{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <h1 class="title">Результаты теста</h1>
+    <p class="score">Ваш результат: <strong>{{ score }}</strong></p>
+    
+    <div class="results-list">
+        {% for result in results %}
+        <div class="result-item {% if result.correct %}correct{% else %}incorrect{% endif %}">
+            <p><strong>Задание {{ result.task_id }}</strong></p>
+            <p><strong>Ваш ответ:</strong> {{ result.user_answer }}</p>
+            <p><strong>Правильный ответ:</strong> {{ result.correct_answer }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <a href="{{ url_for('index', sid=sid) }}" class="return-btn">Вернуться на главную</a>
+</div>
+
+<style>
+    .results-container {
+        max-width: 800px;
+        margin: 20px auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    .title {
+        color: #2E7D32;
+    }
+    .score {
+        font-size: 1.5em;
+        margin: 10px 0;
+    }
+    .results-list {
+        margin-top: 20px;
+    }
+    .result-item {
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .correct {
+        background: #E8F5E9;
+        border-left: 5px solid #2E7D32;
+    }
+    .incorrect {
+        background: #FFEBEE;
+        border-left: 5px solid #D32F2F;
+    }
+    .return-btn {
+        display: inline-block;
+        background: #2E7D32;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        margin-top: 20px;
+    }
+    .return-btn:hover {
+        background: #1B5E20;
+    }
+</style>
+{% endblock %}

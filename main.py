@@ -6,6 +6,7 @@ import json
 from datetime import datetime
 from get_themebyid import *
 from statistics import *
+import uuid
 
 app = Flask(__name__)
 auth = AuthManager()
@@ -16,6 +17,7 @@ COURSES_DIR = "./courses"
 TESTS_DIR = "./tests"
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 UPLOAD_FOLDER = 'static/uploads/group_avatars'
+VARIANTS_DIR = "./variants"
 
 
 @app.context_processor
@@ -70,6 +72,85 @@ def handle_authentication(sid: str):
     if not sid or not auth.check_session(sid):
         return redirect(url_for('login') + f'?sid={sid}')
     return None
+
+# Создание варианта теста
+@app.route('/create_variant', methods=['GET', 'POST'])
+def create_variant():
+    sid = request.args.get('sid')
+    auth_check = handle_authentication(sid)
+    if auth_check:
+        return auth_check
+
+    user = get_current_user(sid)
+    if not user:
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        selected_ids = list(map(int, request.form.getlist('selected_tasks')))
+
+        with open("tasks.json", 'r', encoding='utf-8') as f:
+            all_tasks = json.load(f)
+
+        selected_tasks = [task for task in all_tasks if task['id'] in selected_ids]
+
+        variant_id = str(uuid.uuid4())[:8]
+        variant_data = {
+            'id': variant_id,
+            'created_at': datetime.now().isoformat(),
+            'tasks': selected_tasks
+        }
+
+        os.makedirs(VARIANTS_DIR, exist_ok=True)
+        with open(os.path.join(VARIANTS_DIR, f"{variant_id}.json"), 'w', encoding='utf-8') as f:
+            json.dump(variant_data, f, ensure_ascii=False, indent=4)
+
+        return redirect(url_for('solve_variant', variant_id=variant_id, sid=sid))
+
+    with open("tasks.json", 'r', encoding='utf-8') as f:
+        tasks = json.load(f)
+
+    return render_template('create_variant.html', tasks=tasks, sid = sid)
+
+# Решение варианта
+@app.route('/solve_variant/<variant_id>', methods=['GET', 'POST'])
+def solve_variant(variant_id):
+    sid = request.args.get('sid')
+    variant_file = os.path.join(VARIANTS_DIR, f"{variant_id}.json")
+    if not os.path.exists(variant_file):
+        abort(404)
+
+    auth_check = handle_authentication(sid)
+    if auth_check:
+        return auth_check
+
+    user = get_current_user(sid)
+    if not user:
+        return redirect(url_for('login'))
+
+    with open(variant_file, 'r', encoding='utf-8') as f:
+        variant_data = json.load(f)
+
+    if request.method == 'POST':
+        correct = 0
+        results = []
+
+        for task in variant_data['tasks']:
+            user_answer = request.form.get(f'task_{task["id"]}')
+            is_correct = user_answer == task['answer']
+            if is_correct:
+                correct += 1
+            results.append({
+                'task_id': task['id'],
+                'correct': is_correct,
+                'user_answer': user_answer,
+                'correct_answer': task['answer']
+            })
+
+        score = f"{correct}/{len(variant_data['tasks'])}"
+        return render_template('variant_results.html', score=score, results=results, sid=sid)
+
+    return render_template('solve_variant.html', variant=variant_data, sid=sid)
+
 
 
 @app.route('/logout')
@@ -422,9 +503,12 @@ def register():
 @app.route('/profile')
 def profile():
     sid = request.args.get('sid')
-    user = auth.get_user_by_session(sid)
+    if not auth.check_session(sid) if sid else False:
+        return redirect(url_for('login'))
 
     user = auth.get_user_by_session(sid)
+
+
     userid = user.username
     tasks_stats = get_tasks_stats(userid)
     total_tasks = sum(stats['total'] for stats in tasks_stats.values())
